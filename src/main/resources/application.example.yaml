@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: identity-service
+  datasource:
+    url: ""
+    username: 
+    password: 
+    driver-class-name: 
+    hikari:
+      schema: 
+  jpa:
+    properties:
+      hibernate:
+        default_schema: 
+    hibernate:
+      ddl-auto:
+    show-sql:
+    generate-ddl:
+
+logging:
+  level:
+    com.zaxxer.hikari:
+    org.hibernate.engine.jdbc.connections.internal:
+    org.hibernate.orm.connections.pooling:
+
+jwt:
+  signerKey:
+  valid-duration: # in second
+  refreshable-duration: # in seconds
+
+server:
+  port: 8080
+  servlet:
+    context-path: /identity

@@ -1,0 +1,64 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version "$bootVer"
+	id 'io.spring.dependency-management' version "$depMgtVer"
+	id 'io.freefair.lombok' version "$freefairLombokVer"
+	id 'jacoco'
+}
+
+group = sysGroup
+version = sysVersion
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(javaVersion)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testRuntimeOnly "org.apache.logging.log4j:log4j-core"
+	testRuntimeOnly "org.apache.logging.log4j:log4j-jul"
+	testRuntimeOnly "org.apache.logging.log4j:log4j-slf4j-impl"
+
+	implementation "com.google.guava:guava:${googleGuavaVersion}"
+	implementation "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
+	compileOnly "com.sun.xml.bind:jaxb-osgi:$jaxbOsgiVer"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+		html.required = true
+	}
+}

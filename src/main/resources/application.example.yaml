@@ -25,7 +25,7 @@ logging:
 
 jwt:
   signerKey:
-  valid-duration: # in second
+  valid-duration: # in seconds
   refreshable-duration: # in seconds
 
 server:

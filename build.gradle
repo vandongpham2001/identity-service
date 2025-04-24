@@ -1,9 +1,10 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version "$bootVer"
-	id 'io.spring.dependency-management' version "$depMgtVer"
-	id 'io.freefair.lombok' version "$freefairLombokVer"
+	id 'org.springframework.boot' version "$bootVersion"
+	id 'io.spring.dependency-management' version "$depMgtVersion"
+	id 'io.freefair.lombok' version "$freefairLombokVersion"
 	id 'jacoco'
+	id 'com.diffplug.spotless' version "${spotlessVersion}"
 }
 
 group = sysGroup
@@ -36,6 +37,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -48,11 +50,25 @@ dependencies {
 
 	implementation "com.google.guava:guava:${googleGuavaVersion}"
 	implementation "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
-	compileOnly "com.sun.xml.bind:jaxb-osgi:$jaxbOsgiVer"
+	compileOnly "com.sun.xml.bind:jaxb-osgi:${jaxbOsgiVersion}"
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+	implementation("org.testcontainers:testcontainers-bom:${testcontainersVersion}")
+	testImplementation "org.testcontainers:testcontainers"
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation('org.testcontainers:postgresql')
+
+	implementation("com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}")
+	testImplementation "com.h2database:h2:${h2Version}"
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = jacocoVersion
 }
 
 jacocoTestReport {
@@ -60,5 +76,28 @@ jacocoTestReport {
 	reports {
 		xml.required = true
 		html.required = true
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+				'com/dongpv/sns/identity/dto/**',
+				'com/dongpv/sns/identity/entity/**',
+				'com/dongpv/sns/identity/mapper/**',
+				'com/dongpv/sns/identity/configuration/**'
+			])
+		}))
+	}
+}
+
+spotless {
+	java {
+		removeUnusedImports()
+		toggleOffOn()
+		trimTrailingWhitespace()
+		endWithNewline()
+		indentWithTabs()
+		palantirJavaFormat()
+		importOrder("java", "jakarta", "org", "com", "com.diffplug")
 	}
 }

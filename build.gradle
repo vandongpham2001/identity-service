@@ -61,6 +61,7 @@ dependencies {
 
 	implementation("com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}")
 	testImplementation "com.h2database:h2:${h2Version}"
+	implementation("org.json:json:${orgJsonVersion}")
 }
 
 tasks.named('test') {

@@ -17,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @MappedSuperclass
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity extends BaseAuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
@@ -28,6 +28,11 @@ public abstract class BaseEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         BaseEntity that = (BaseEntity) o;
         return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override

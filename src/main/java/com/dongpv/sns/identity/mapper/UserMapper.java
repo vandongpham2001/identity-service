@@ -8,8 +8,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-import com.dongpv.sns.identity.dto.request.CreateUserRequestDto;
-import com.dongpv.sns.identity.dto.request.UpdateUserRequestDto;
+import com.dongpv.sns.identity.dto.request.admin.user.CreateUserRequestDto;
+import com.dongpv.sns.identity.dto.request.admin.user.UpdateUserRequestDto;
 import com.dongpv.sns.identity.dto.response.UserResponseDto;
 import com.dongpv.sns.identity.entity.UserEntity;
 

@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-import com.dongpv.sns.identity.dto.request.CreateRoleRequestDto;
+import com.dongpv.sns.identity.dto.request.admin.role.CreateRoleRequestDto;
 import com.dongpv.sns.identity.dto.response.RoleResponseDto;
 import com.dongpv.sns.identity.entity.RoleEntity;
 

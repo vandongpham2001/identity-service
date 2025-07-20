@@ -1,0 +1,34 @@
+package com.dongpv.sns.identity.exception;
+
+import com.dongpv.sns.identity.code.ErrorCode;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.io.Serial;
+
+@Getter
+@ResponseStatus(HttpStatus.ACCEPTED)
+public class CommonException extends RuntimeException {
+    private final ErrorCode errorCode;
+
+    @Serial
+    private static final long serialVersionUID = 3670539246776446256L;
+
+    public CommonException() {
+        this("Uncategorized", null);
+    }
+
+    public CommonException(String message) {
+        this(message, null);
+    }
+
+    public CommonException(ErrorCode errorCode) {
+        this(errorCode.getMessage(), errorCode);
+    }
+
+    private CommonException(String message, ErrorCode errorCode) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+}

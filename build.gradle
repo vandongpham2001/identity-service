@@ -1,8 +1,10 @@
+import groovy.lang.Closure
+
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version "$bootVersion"
-	id 'io.spring.dependency-management' version "$depMgtVersion"
-	id 'io.freefair.lombok' version "$freefairLombokVersion"
+	id 'org.springframework.boot' version "${bootVersion}"
+	id 'io.spring.dependency-management' version "${depMgtVersion}"
+	id 'io.freefair.lombok' version "${freefairLombokVersion}"
 	id 'jacoco'
 	id 'com.diffplug.spotless' version "${spotlessVersion}"
 }
@@ -28,7 +30,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 dependencies {
@@ -54,14 +55,15 @@ dependencies {
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
-	implementation("org.testcontainers:testcontainers-bom:${testcontainersVersion}")
-	testImplementation "org.testcontainers:testcontainers"
-	testImplementation("org.testcontainers:junit-jupiter")
-	testImplementation('org.testcontainers:postgresql')
+	implementation "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	testImplementation 'org.testcontainers:testcontainers'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
 
-	implementation("com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}")
+	implementation "com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}"
 	testImplementation "com.h2database:h2:${h2Version}"
-	implementation("org.json:json:${orgJsonVersion}")
+	implementation "org.json:json:${orgJsonVersion}"
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:4.3.0"
 }
 
 tasks.named('test') {
@@ -81,14 +83,14 @@ jacocoTestReport {
 	}
 
 	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: [
-				'com/dongpv/sns/identity/dto/**',
-				'com/dongpv/sns/identity/entity/**',
-				'com/dongpv/sns/identity/mapper/**',
-				'com/dongpv/sns/identity/configuration/**'
-			])
-		}))
+		classDirectories.setFrom(files(classDirectories.files.collect(({
+            fileTree(dir: it, exclude: [
+                    'com/dongpv/sns/identity/dto/**',
+                    'com/dongpv/sns/identity/entity/**',
+                    'com/dongpv/sns/identity/mapper/**',
+                    'com/dongpv/sns/identity/configuration/**'
+            ])
+        } as Closure<Object>))))
 	}
 }
 

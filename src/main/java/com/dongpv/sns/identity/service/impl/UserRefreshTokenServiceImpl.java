@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 
 import com.dongpv.sns.identity.code.ErrorCode;
 import com.dongpv.sns.identity.exception.UnauthenticatedException;
+import com.dongpv.sns.identity.service.UserRefreshTokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,6 @@ import com.dongpv.sns.identity.entity.UserRefreshTokenEntity;
 import com.dongpv.sns.identity.exception.RefreshTokenException;
 import com.dongpv.sns.identity.repository.UserRefreshTokenRepository;
 import com.dongpv.sns.identity.security.JwtTokenPrivateUtils;
-import com.dongpv.sns.identity.service.IUserRefreshTokenService;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import lombok.experimental.NonFinal;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserRefreshTokenService implements IUserRefreshTokenService {
+public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
     @NonFinal
     @Value("${jwt.refreshable-duration}")
     private Long refreshTokenDuration;

@@ -18,7 +18,4 @@ public class AuthenticationRequestDto {
 
     @NotEmpty
     String password;
-
-    @DobConstraint(min = 14, message = "INVALID_DOB")
-    LocalDate dob;
 }

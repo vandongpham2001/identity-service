@@ -3,15 +3,15 @@ package com.dongpv.sns.identity.service.impl;
 import java.util.List;
 
 import com.dongpv.sns.identity.exception.DataNotFoundException;
+import com.dongpv.sns.identity.service.GenericService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.dongpv.sns.identity.mapper.GenericMapper;
-import com.dongpv.sns.identity.service.IGenericService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class GenericService<E, I, C, U, D> implements IGenericService<I, C, U, D> {
+public abstract class GenericServiceImpl<E, I, C, U, D> implements GenericService<I, C, U, D> {
 
     protected final JpaRepository<E, I> repository;
     protected final GenericMapper<E, C, U, D> mapper;

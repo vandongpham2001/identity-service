@@ -1,5 +1,6 @@
 package com.dongpv.sns.identity.configuration;
 
+import com.dongpv.sns.identity.code.ErrorCode;
 import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 import com.dongpv.sns.identity.exception.ApiResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +40,7 @@ public class GatewayFilter extends OncePerRequestFilter {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
             MultiRecordErrorResponseDtoBase errorResponse = new MultiRecordErrorResponseDtoBase(
-                    HttpStatus.NOT_FOUND.value(), e.getMessage()
+                    ErrorCode.API_RESOURCE_NOT_FOUND.getCode(), e.getMessage()
             );
             errorResponse.addFirstRecordDetail(KEY_MESSAGE, e.getLocalizedMessage());
 

@@ -6,6 +6,7 @@ import java.util.List;
 import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
 import com.dongpv.sns.identity.exception.UserExistException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
+import com.dongpv.sns.identity.service.UserService;
 import jakarta.persistence.EntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
@@ -24,7 +25,6 @@ import com.dongpv.sns.identity.entity.UserEntity;
 import com.dongpv.sns.identity.mapper.UserMapper;
 import com.dongpv.sns.identity.repository.RoleRepository;
 import com.dongpv.sns.identity.repository.UserRepository;
-import com.dongpv.sns.identity.service.IUserService;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserService implements IUserService {
+public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     RoleRepository roleRepository;
     EntityManager entityManager;
@@ -57,8 +57,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserResponseDto update(String userId, UpdateUserRequestDto request) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public UserResponseDto update(String id, UpdateUserRequestDto request) {
+        UserEntity user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
         UserMapper.INSTANCE.toUpdateEntity(user, request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -69,8 +69,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void delete(String userId) {
-        userRepository.deleteById(userId);
+    public void delete(String id) {
+        userRepository.deleteById(id);
     }
 
     @Override

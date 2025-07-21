@@ -1,9 +1,11 @@
 package com.dongpv.sns.identity.service.impl;
 
 import java.util.HashSet;
-import java.util.List;
 
+import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
+import com.dongpv.sns.identity.service.RoleService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.dongpv.sns.identity.dto.request.admin.role.CreateRoleRequestDto;
@@ -11,7 +13,6 @@ import com.dongpv.sns.identity.dto.response.RoleResponseDto;
 import com.dongpv.sns.identity.mapper.RoleMapper;
 import com.dongpv.sns.identity.repository.PermissionRepository;
 import com.dongpv.sns.identity.repository.RoleRepository;
-import com.dongpv.sns.identity.service.IRoleService;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,37 +23,37 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class RoleService implements IRoleService {
+public class RoleServiceImpl implements RoleService {
     RoleRepository roleRepository;
     PermissionRepository permissionRepository;
 
     @Override
     public RoleResponseDto create(CreateRoleRequestDto request) {
-        var roleOpt = roleRepository.findByName(request.getName());
-        var role = roleOpt.map(existRole -> {
+        var entityOpt = roleRepository.findByName(request.getName());
+        var entity = entityOpt.map(existRole -> {
             RoleMapper.INSTANCE.toUpdateEntity(existRole, request);
             return existRole;
         }).orElseGet(() -> RoleMapper.INSTANCE.toCreateEntity(request));
 
         var permissions = permissionRepository.findAllById(request.getPermissions());
-        role.setPermissions(new HashSet<>(permissions));
-        role = roleRepository.save(role);
-        return RoleMapper.INSTANCE.toResponseDto(role);
+        entity.setPermissions(new HashSet<>(permissions));
+        entity = roleRepository.save(entity);
+        return RoleMapper.INSTANCE.toResponseDto(entity);
 
     }
 
     @Override
-    public RoleResponseDto update(CreateRoleRequestDto request) {
+    public RoleResponseDto update(String id, CreateRoleRequestDto request) {
         return null;
     }
 
     @Override
-    public void delete(String role) {
-        roleRepository.deleteById(role);
+    public void delete(String id) {
+        roleRepository.deleteById(id);
     }
 
     @Override
-    public Page<RoleResponseDto> filter() {
+    public Page<RoleResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter) {
         return null;
     }
 

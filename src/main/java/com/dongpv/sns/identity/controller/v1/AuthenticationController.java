@@ -2,6 +2,7 @@ package com.dongpv.sns.identity.controller.v1;
 
 import java.text.ParseException;
 
+import com.dongpv.sns.identity.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,6 @@ import com.dongpv.sns.identity.dto.request.auth.LogoutRequestDto;
 import com.dongpv.sns.identity.dto.request.auth.RefreshTokenRequestDto;
 import com.dongpv.sns.identity.dto.response.AuthenticationResponseDto;
 import com.dongpv.sns.identity.dto.response.IntrospectResponseDto;
-import com.dongpv.sns.identity.service.impl.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 
 import lombok.AccessLevel;
@@ -33,27 +33,27 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<AuthenticationResponseDto>> login(@Valid @RequestBody AuthenticationRequestDto request) {
+    public ApiResponse<AuthenticationResponseDto> login(@Valid @RequestBody AuthenticationRequestDto request) {
         var result = authenticationService.login(request);
-        return ResponseEntity.ok(ApiResponse.ok(result));
+        return ApiResponse.ok(result);
     }
 
     @PostMapping("/introspect")
-    public ResponseEntity<ApiResponse<IntrospectResponseDto>> introspect(@RequestBody IntrospectRequestDto request)
+    public ApiResponse<IntrospectResponseDto> introspect(@Valid @RequestBody IntrospectRequestDto request)
             throws ParseException, JOSEException {
         var result = authenticationService.introspect(request);
-        return ResponseEntity.ok(ApiResponse.ok(result));
+        return ApiResponse.ok(result);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout(@RequestBody LogoutRequestDto request) throws ParseException, JOSEException {
+    public ApiResponse<Void> logout(@Valid @RequestBody LogoutRequestDto request) throws ParseException, JOSEException {
         authenticationService.logout(request);
-        return ResponseEntity.ok(ApiResponse.<Void>builder().build());
+        return ApiResponse.<Void>builder().build();
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<ApiResponse<AuthenticationResponseDto>> refreshToken(@RequestBody RefreshTokenRequestDto request) {
+    public ApiResponse<AuthenticationResponseDto> refreshToken(@Valid @RequestBody RefreshTokenRequestDto request) {
         var result = authenticationService.refreshToken(request);
-        return ResponseEntity.ok(ApiResponse.ok(result));
+        return ApiResponse.ok(result);
     }
 }

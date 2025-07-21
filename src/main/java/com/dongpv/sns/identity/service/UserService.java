@@ -7,12 +7,10 @@ import com.dongpv.sns.identity.dto.response.UserResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
-
-public interface IUserService {
+public interface UserService {
     UserResponseDto create(CreateUserRequestDto request);
-    UserResponseDto update(String userId, UpdateUserRequestDto request);
-    void delete(String userId);
+    UserResponseDto update(String id, UpdateUserRequestDto request);
+    void delete(String id);
     Page<UserResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter);
     UserResponseDto findOneById(String id);
     UserResponseDto getMyInfo();

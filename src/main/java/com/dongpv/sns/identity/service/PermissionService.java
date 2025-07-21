@@ -6,7 +6,7 @@ import com.dongpv.sns.identity.dto.response.PermissionResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-public interface IPermissionService {
+public interface PermissionService {
     PermissionResponseDto create(CreatePermissionRequestDto request);
     PermissionResponseDto update(String id, CreatePermissionRequestDto request);
     void delete(String permission);

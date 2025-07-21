@@ -10,6 +10,8 @@ import com.dongpv.sns.identity.exception.CommonException;
 import com.dongpv.sns.identity.exception.UnauthenticatedException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
 import com.dongpv.sns.identity.repository.UserRefreshTokenRepository;
+import com.dongpv.sns.identity.service.AuthenticationService;
+import com.dongpv.sns.identity.service.UserRefreshTokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +29,6 @@ import com.dongpv.sns.identity.repository.InvalidatedTokenRepository;
 import com.dongpv.sns.identity.repository.UserRepository;
 import com.dongpv.sns.identity.security.JwtTokenPrivateUtils;
 import com.dongpv.sns.identity.security.JwtTokenPublicUtils;
-import com.dongpv.sns.identity.service.IAuthenticationService;
 import com.nimbusds.jose.*;
 
 import lombok.AccessLevel;
@@ -40,7 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AuthenticationService implements IAuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
     @NonFinal
     @Value("${jwt.valid-duration}")
     Long jwtValidDuration;

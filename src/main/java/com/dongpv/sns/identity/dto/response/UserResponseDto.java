@@ -1,6 +1,5 @@
 package com.dongpv.sns.identity.dto.response;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import lombok.*;
@@ -17,12 +16,6 @@ public class UserResponseDto {
     String email;
 
     String username;
-
-    String firstName;
-
-    String lastName;
-
-    LocalDate dob;
 
     Set<RoleResponseDto> roles;
 }

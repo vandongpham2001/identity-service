@@ -10,12 +10,12 @@ import com.dongpv.sns.identity.dto.response.AuthenticationResponseDto;
 import com.dongpv.sns.identity.dto.response.IntrospectResponseDto;
 import com.nimbusds.jose.JOSEException;
 
-public interface IAuthenticationService {
+public interface AuthenticationService {
     AuthenticationResponseDto login(AuthenticationRequestDto request);
 
     IntrospectResponseDto introspect(IntrospectRequestDto request) throws JOSEException, ParseException;
 
     void logout(LogoutRequestDto request) throws ParseException, JOSEException;
 
-    AuthenticationResponseDto refreshToken(RefreshTokenRequestDto request) throws ParseException, JOSEException;
+    AuthenticationResponseDto refreshToken(RefreshTokenRequestDto request);
 }

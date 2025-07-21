@@ -2,6 +2,7 @@ package com.dongpv.sns.identity.service.impl;
 
 import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
 import com.dongpv.sns.identity.exception.DataNotFoundException;
+import com.dongpv.sns.identity.service.PermissionService;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,6 @@ import com.dongpv.sns.identity.dto.response.PermissionResponseDto;
 import com.dongpv.sns.identity.entity.PermissionEntity;
 import com.dongpv.sns.identity.mapper.PermissionMapper;
 import com.dongpv.sns.identity.repository.PermissionRepository;
-import com.dongpv.sns.identity.service.IPermissionService;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PermissionService implements IPermissionService {
+public class PermissionServiceImpl implements PermissionService {
     PermissionRepository permissionRepository;
 
     @Override

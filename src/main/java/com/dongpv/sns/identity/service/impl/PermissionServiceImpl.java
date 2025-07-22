@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.dongpv.sns.identity.util.PaginationUtils.ASC;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Page<PermissionResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter) {
         Sort sortable;
-        if (filter.getSortType().equals("asc")) {
+        if (filter.getSortType().equals(ASC)) {
             sortable = Sort.by(filter.getSortColumn()).ascending();
         } else {
             sortable = Sort.by(filter.getSortColumn()).descending();

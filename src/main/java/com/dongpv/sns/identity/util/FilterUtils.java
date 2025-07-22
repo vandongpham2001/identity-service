@@ -7,7 +7,7 @@ import java.util.Map;
 public final class FilterUtils {
     private FilterUtils() {}
 
-    public static BaseFilterRequestDto handleFilterRequest(final Map<String, String> requestParams, boolean isRawQuery) {
+    public static BaseFilterRequestDto handleFilterRequest(final Map<String, String> requestParams, boolean useRawQuery) {
         var filter = new BaseFilterRequestDto();
 
         filter.setKeyword(StringUtils.getValue(requestParams.get("keyword")));
@@ -21,7 +21,7 @@ public final class FilterUtils {
             filter.setSortType(StringUtils.getValue(requestParams.get("sortType")));
         }
 
-        if (isRawQuery) {
+        if (useRawQuery) {
             filter.setSortColumn(StringUtils.camelToSnake(filter.getSortColumn()));
         }
 

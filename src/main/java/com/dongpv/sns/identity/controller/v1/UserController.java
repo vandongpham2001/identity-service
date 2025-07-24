@@ -58,7 +58,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ApiResponse<Void> delete(@PathVariable String userId) {
         userService.delete(userId);
-        return ApiResponse.<Void>builder().build();
+        return ApiResponse.ok();
     }
 
     @GetMapping("/my-info")

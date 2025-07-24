@@ -18,6 +18,16 @@ public class ApiResponse<T> implements BaseApiResponse {
     T data;
 
     /**
+     * Convenience method to create a success response
+     */
+    public static <T> ApiResponse<T> ok() {
+        return ApiResponse.<T>builder()
+                .code(200)
+                .status(true)
+                .build();
+    }
+
+    /**
      * Convenience method to create a success response with code
      */
     public static <T> ApiResponse<T> ok(int code) {

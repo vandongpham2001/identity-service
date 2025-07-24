@@ -43,14 +43,9 @@ public class RoleController {
         return ApiResponse.ok(roleService.create(request));
     }
 
-    @PutMapping("/{roleId}")
-    public ApiResponse<RoleResponseDto> update(@PathVariable String roleId, @RequestBody CreateRoleRequestDto request) {
-        return ApiResponse.ok(roleService.update(roleId, request));
-    }
-
     @DeleteMapping("/{roleId}")
     public ApiResponse<Void> delete(@PathVariable String roleId) {
         roleService.delete(roleId);
-        return ApiResponse.<Void>builder().build();
+        return ApiResponse.ok();
     }
 }

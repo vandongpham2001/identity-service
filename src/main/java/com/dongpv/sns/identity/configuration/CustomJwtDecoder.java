@@ -35,7 +35,6 @@ public class CustomJwtDecoder implements JwtDecoder {
 
     @Override
     public Jwt decode(String token) {
-
         try {
             jwtTokenPublicUtils.verifyToken(token);
         } catch (JOSEException | ParseException e) {

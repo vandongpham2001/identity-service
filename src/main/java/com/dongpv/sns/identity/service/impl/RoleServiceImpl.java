@@ -3,9 +3,10 @@ package com.dongpv.sns.identity.service.impl;
 import java.util.HashSet;
 
 import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
+import com.dongpv.sns.identity.entity.RoleEntity;
+import com.dongpv.sns.identity.exception.DataNotFoundException;
 import com.dongpv.sns.identity.service.RoleService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import com.dongpv.sns.identity.dto.request.admin.role.CreateRoleRequestDto;
@@ -18,6 +19,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import static com.dongpv.sns.identity.util.PaginationUtils.ASC;
 
 @Slf4j
 @Service
@@ -43,22 +46,27 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleResponseDto update(String id, CreateRoleRequestDto request) {
-        return null;
-    }
-
-    @Override
     public void delete(String id) {
         roleRepository.deleteById(id);
     }
 
     @Override
     public Page<RoleResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter) {
-        return null;
+        Sort sortable;
+        if (filter.getSortType().equals(ASC)) {
+            sortable = Sort.by(filter.getSortColumn()).ascending();
+        } else {
+            sortable = Sort.by(filter.getSortColumn()).descending();
+        }
+        Pageable paging = PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize(), sortable);
+        Page<RoleEntity> entities = roleRepository.filter(filter.getKeyword(), paging);
+        Page<RoleResponseDto> data = entities.map(RoleMapper.INSTANCE::toResponseDto);
+        return new PageImpl<>(data.getContent(), pageRequest, entities.getTotalElements());
     }
 
     @Override
     public RoleResponseDto findOneById(String id) {
-        return null;
+        RoleEntity entity = roleRepository.findById(id).orElseThrow(DataNotFoundException::new);
+        return RoleMapper.INSTANCE.toResponseDto(entity);
     }
 }

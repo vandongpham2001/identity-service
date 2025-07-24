@@ -3,6 +3,7 @@ package com.dongpv.sns.identity.controller.v1;
 import java.util.Map;
 
 import com.dongpv.sns.identity.dto.PageApiResponseDto;
+import com.dongpv.sns.identity.dto.request.admin.permission.UpdatePermissionRequestDto;
 import com.dongpv.sns.identity.service.PermissionService;
 import com.dongpv.sns.identity.util.FilterUtils;
 import com.dongpv.sns.identity.util.PaginationUtils;
@@ -44,13 +45,13 @@ public class PermissionController {
     }
 
     @PutMapping("/{permissionId}")
-    public ApiResponse<PermissionResponseDto> update(@PathVariable String permissionId, @RequestBody CreatePermissionRequestDto request) {
+    public ApiResponse<PermissionResponseDto> update(@PathVariable String permissionId, @RequestBody UpdatePermissionRequestDto request) {
         return ApiResponse.ok(permissionService.update(permissionId, request));
     }
 
     @DeleteMapping("/{permissionId}")
     public ApiResponse<Void> delete(@PathVariable String permissionId) {
         permissionService.delete(permissionId);
-        return ApiResponse.<Void>builder().build();
+        return ApiResponse.ok();
     }
 }

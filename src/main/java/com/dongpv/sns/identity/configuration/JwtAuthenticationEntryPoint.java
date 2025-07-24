@@ -2,6 +2,7 @@ package com.dongpv.sns.identity.configuration;
 
 import java.io.IOException;
 
+import com.dongpv.sns.identity.code.ErrorCode;
 import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         final MultiRecordErrorResponseDtoBase responseDto =
                 new MultiRecordErrorResponseDtoBase(
-                        HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+                        ErrorCode.UNAUTHENTICATED.getCode(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         responseDto.addDetail(KEY_EXCEPTION, authException.getLocalizedMessage());
         String responseMsg = objectMapper.writeValueAsString(responseDto);
         response.getWriter().write(responseMsg);

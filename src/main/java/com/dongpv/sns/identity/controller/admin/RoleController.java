@@ -1,5 +1,6 @@
-package com.dongpv.sns.identity.controller.v1;
+package com.dongpv.sns.identity.controller.admin;
 
+import com.dongpv.sns.identity.constant.RouteConstant;
 import com.dongpv.sns.identity.dto.PageApiResponseDto;
 import com.dongpv.sns.identity.service.RoleService;
 import com.dongpv.sns.identity.util.FilterUtils;
@@ -21,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/roles")
+@RequestMapping(RouteConstant.Admin.ROLES)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleController {
     RoleService roleService;

@@ -1,10 +1,8 @@
-package com.dongpv.sns.identity.controller.v1;
+package com.dongpv.sns.identity.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.dongpv.sns.identity.constant.ApiPath;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

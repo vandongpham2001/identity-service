@@ -1,13 +1,12 @@
-package com.dongpv.sns.identity.controller.v1;
+package com.dongpv.sns.identity.controller.admin;
 
 import java.util.Map;
 
+import com.dongpv.sns.identity.constant.RouteConstant;
 import com.dongpv.sns.identity.dto.PageApiResponseDto;
-import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
 import com.dongpv.sns.identity.service.UserService;
 import com.dongpv.sns.identity.util.FilterUtils;
 import com.dongpv.sns.identity.util.PaginationUtils;
-import com.dongpv.sns.identity.util.StringUtils;
 import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -27,13 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping(RouteConstant.Admin.USERS)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
     UserService userService;
 
     @GetMapping
-    public ApiResponse<PageApiResponseDto<UserResponseDto>> filterUsers(@RequestParam(required = false) final Map<String, String> requestParams) {
+    public ApiResponse<PageApiResponseDto<UserResponseDto>> filter(@RequestParam(required = false) final Map<String, String> requestParams) {
         PageRequest pageRequest = PaginationUtils.generatePageRequest(requestParams);
         var filter = FilterUtils.handleFilterRequest(requestParams, true);
         Page<UserResponseDto> pageResponseDto = userService.filter(pageRequest, filter);
@@ -59,10 +58,5 @@ public class UserController {
     public ApiResponse<Void> delete(@PathVariable String userId) {
         userService.delete(userId);
         return ApiResponse.ok();
-    }
-
-    @GetMapping("/my-info")
-    public ApiResponse<UserResponseDto> getMyInfo() {
-        return ApiResponse.ok(userService.getMyInfo());
     }
 }

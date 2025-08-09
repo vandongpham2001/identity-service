@@ -10,7 +10,6 @@ import com.dongpv.sns.identity.service.UserService;
 import jakarta.persistence.EntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,35 +41,38 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDto create(CreateUserRequestDto request) {
-        UserEntity user = UserMapper.INSTANCE.toCreateEntity(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        UserEntity entity = UserMapper.INSTANCE.toCreateEntity(request);
+        entity.setPassword(passwordEncoder.encode(request.getPassword()));
         HashSet<RoleEntity> roles = new HashSet<>();
         roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
-        user.setRoles(roles);
+        entity.setRoles(roles);
         try {
-            user = userRepository.save(user);
-        } catch (DataIntegrityViolationException exception) {
+            entity = userRepository.save(entity);
+        } catch (DataIntegrityViolationException ex) {
             throw new UserExistException();
         }
-        return UserMapper.INSTANCE.toResponseDto(user);
+        return UserMapper.INSTANCE.toResponseDto(entity);
     }
 
     @Override
     public UserResponseDto update(String id, UpdateUserRequestDto request) {
-        UserEntity user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        UserEntity entity = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
-        UserMapper.INSTANCE.toUpdateEntity(user, request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        UserMapper.INSTANCE.toUpdateEntity(entity, request);
+        entity.setPassword(passwordEncoder.encode(request.getPassword()));
         var roles = roleRepository.findAllById(request.getRoles());
-        user.setRoles(new HashSet<>(roles));
+        entity.setRoles(new HashSet<>(roles));
 
-        return UserMapper.INSTANCE.toResponseDto(userRepository.save(user));
+        return UserMapper.INSTANCE.toResponseDto(userRepository.save(entity));
     }
 
     @Override
     public void delete(String id) {
-        userRepository.deleteById(id);
+        var entity = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        entity.softDelete();
+        userRepository.save(entity);
     }
 
     @Override
@@ -135,24 +137,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PostAuthorize("returnObject.email == authentication.name")
     public UserResponseDto findOneById(String id) {
         return UserMapper.INSTANCE.toResponseDto(
                 userRepository.findById(id).orElseThrow(UserNotFoundException::new));
     }
 
     @Override
-    public UserResponseDto getMyInfo() {
+    public UserResponseDto me() {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
-        UserEntity user =
+        UserEntity entity =
                 userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-        return UserMapper.INSTANCE.toResponseDto(user);
-    }
-
-    public Page<UserEntity> filterUsersByUsername(int page, int size, String sortBy) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return userRepository.findAll(pageable);
+        return UserMapper.INSTANCE.toResponseDto(entity);
     }
 }

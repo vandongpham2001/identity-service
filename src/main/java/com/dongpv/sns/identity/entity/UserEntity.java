@@ -28,7 +28,7 @@ public class UserEntity extends BaseEntity {
 
     String password;
 
-    @Column(name = "email_verified", nullable = false, columnDefinition = "boolean default false")
+    @Column(name = "email_verified", nullable = true, columnDefinition = "boolean default false")
     Boolean emailVerified;
 
     @ManyToMany

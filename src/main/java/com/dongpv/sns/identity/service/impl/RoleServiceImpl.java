@@ -42,7 +42,6 @@ public class RoleServiceImpl implements RoleService {
         entity.setPermissions(new HashSet<>(permissions));
         entity = roleRepository.save(entity);
         return RoleMapper.INSTANCE.toResponseDto(entity);
-
     }
 
     @Override

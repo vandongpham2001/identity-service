@@ -1,7 +1,8 @@
-package com.dongpv.sns.identity.controller.v1;
+package com.dongpv.sns.identity.controller.admin;
 
 import java.util.Map;
 
+import com.dongpv.sns.identity.constant.RouteConstant;
 import com.dongpv.sns.identity.dto.PageApiResponseDto;
 import com.dongpv.sns.identity.dto.request.admin.permission.UpdatePermissionRequestDto;
 import com.dongpv.sns.identity.service.PermissionService;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/permissions")
+@RequestMapping(RouteConstant.Admin.PERMISSIONS)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionController {
     PermissionService permissionService;

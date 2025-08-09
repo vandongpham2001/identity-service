@@ -13,5 +13,5 @@ public interface UserService {
     void delete(String id);
     Page<UserResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter);
     UserResponseDto findOneById(String id);
-    UserResponseDto getMyInfo();
+    UserResponseDto me();
 }

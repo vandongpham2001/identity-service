@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.dongpv.sns.identity.dto.ApiResponse;
@@ -26,7 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(RouteConstant.Admin.USERS)
+@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping(RouteConstant.Admin.USER)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
     UserService userService;
@@ -39,9 +41,9 @@ public class UserController {
         return ApiResponse.ok(PaginationUtils.buildPageRes(pageResponseDto));
     }
 
-    @GetMapping("/{userId}")
-    public ApiResponse<UserResponseDto> getById(@PathVariable("userId") String userId) {
-        return ApiResponse.ok(userService.findOneById(userId));
+    @GetMapping("/{id}")
+    public ApiResponse<UserResponseDto> getById(@PathVariable("id") String id) {
+        return ApiResponse.ok(userService.findOneById(id));
     }
 
     @PostMapping
@@ -49,14 +51,14 @@ public class UserController {
         return ApiResponse.ok(userService.create(request));
     }
 
-    @PutMapping("/{userId}")
-    public ApiResponse<UserResponseDto> update(@PathVariable String userId, @RequestBody UpdateUserRequestDto request) {
-        return ApiResponse.ok(userService.update(userId, request));
+    @PutMapping("/{id}")
+    public ApiResponse<UserResponseDto> update(@PathVariable String id, @RequestBody UpdateUserRequestDto request) {
+        return ApiResponse.ok(userService.update(id, request));
     }
 
-    @DeleteMapping("/{userId}")
-    public ApiResponse<Void> delete(@PathVariable String userId) {
-        userService.delete(userId);
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> delete(@PathVariable String id) {
+        userService.delete(id);
         return ApiResponse.ok();
     }
 }

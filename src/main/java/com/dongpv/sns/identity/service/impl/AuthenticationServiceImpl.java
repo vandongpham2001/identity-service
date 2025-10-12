@@ -104,7 +104,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             InvalidatedTokenEntity invalidatedTokenEntity = InvalidatedTokenEntity.builder()
                     .id(jit)
                     .expiryTime(expiryTime)
-                    .tokenType(TokenType.ACCESS_TOKEN.getCode())
                     .build();
 
             invalidatedTokenRepository.save(invalidatedTokenEntity);

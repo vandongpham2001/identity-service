@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(RouteConstant.User.AUTH)
+@RequestMapping(RouteConstant.AUTH)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
     AuthenticationService authenticationService;
@@ -34,6 +34,12 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ApiResponse<AuthenticationResponseDto> login(@Valid @RequestBody AuthenticationRequestDto request) {
+        var result = authenticationService.login(request);
+        return ApiResponse.ok(result);
+    }
+
+    @PostMapping("/register")
+    public ApiResponse<AuthenticationResponseDto> register(@Valid @RequestBody AuthenticationRequestDto request) {
         var result = authenticationService.login(request);
         return ApiResponse.ok(result);
     }

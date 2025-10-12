@@ -31,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
     PermissionRepository permissionRepository;
 
     @Override
-    public RoleResponseDto create(CreateRoleRequestDto request) {
+    public RoleResponseDto save(CreateRoleRequestDto request) {
         var entityOpt = roleRepository.findByName(request.getName());
         var entity = entityOpt.map(existRole -> {
             RoleMapper.INSTANCE.toUpdateEntity(existRole, request);

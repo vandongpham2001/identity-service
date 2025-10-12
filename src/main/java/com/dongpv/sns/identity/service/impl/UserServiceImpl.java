@@ -4,13 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
-import com.dongpv.sns.identity.exception.UserExistException;
+import com.dongpv.sns.identity.exception.UserAlreadyExistsException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
 import com.dongpv.sns.identity.service.UserService;
 import jakarta.persistence.EntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,17 +40,17 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDto create(CreateUserRequestDto request) {
         UserEntity entity = UserMapper.INSTANCE.toCreateEntity(request);
         entity.setPassword(passwordEncoder.encode(request.getPassword()));
+        entity.setEmailVerified(false);
         HashSet<RoleEntity> roles = new HashSet<>();
         roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
         entity.setRoles(roles);
         try {
             entity = userRepository.save(entity);
         } catch (DataIntegrityViolationException ex) {
-            throw new UserExistException();
+            throw new UserAlreadyExistsException();
         }
         return UserMapper.INSTANCE.toResponseDto(entity);
     }
@@ -61,7 +60,6 @@ public class UserServiceImpl implements UserService {
         UserEntity entity = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
         UserMapper.INSTANCE.toUpdateEntity(entity, request);
-        entity.setPassword(passwordEncoder.encode(request.getPassword()));
         var roles = roleRepository.findAllById(request.getRoles());
         entity.setRoles(new HashSet<>(roles));
 
@@ -76,7 +74,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public Page<UserResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter) {
         String commonQuery =
                 """

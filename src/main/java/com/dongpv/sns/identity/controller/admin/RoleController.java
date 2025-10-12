@@ -5,7 +5,9 @@ import com.dongpv.sns.identity.dto.PageApiResponseDto;
 import com.dongpv.sns.identity.service.RoleService;
 import com.dongpv.sns.identity.util.FilterUtils;
 import com.dongpv.sns.identity.util.PaginationUtils;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.dongpv.sns.identity.dto.ApiResponse;
@@ -22,7 +24,8 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(RouteConstant.Admin.ROLES)
+@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping(RouteConstant.Admin.ROLE)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleController {
     RoleService roleService;
@@ -34,19 +37,19 @@ public class RoleController {
         return ApiResponse.ok(PaginationUtils.buildPageRes(roleService.filter(pageRequest, filter)));
     }
 
-    @GetMapping("/{roleId}")
-    public ApiResponse<RoleResponseDto> getById(@PathVariable String roleId) {
-        return ApiResponse.ok(roleService.findOneById(roleId));
+    @GetMapping("/{id}")
+    public ApiResponse<RoleResponseDto> getById(@PathVariable String id) {
+        return ApiResponse.ok(roleService.findOneById(id));
     }
 
     @PostMapping
-    public ApiResponse<RoleResponseDto> create(@RequestBody CreateRoleRequestDto request) {
-        return ApiResponse.ok(roleService.create(request));
+    public ApiResponse<RoleResponseDto> save(@RequestBody CreateRoleRequestDto request) {
+        return ApiResponse.ok(roleService.save(request));
     }
 
-    @DeleteMapping("/{roleId}")
-    public ApiResponse<Void> delete(@PathVariable String roleId) {
-        roleService.delete(roleId);
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> delete(@PathVariable String id) {
+        roleService.delete(id);
         return ApiResponse.ok();
     }
 }

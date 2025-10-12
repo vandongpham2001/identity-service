@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 public interface RoleService {
-    RoleResponseDto create(CreateRoleRequestDto request);
+    RoleResponseDto save(CreateRoleRequestDto request);
     void delete(String id);
     Page<RoleResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter);
     RoleResponseDto findOneById(String id);

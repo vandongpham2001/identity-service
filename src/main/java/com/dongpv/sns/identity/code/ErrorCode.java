@@ -27,12 +27,11 @@ public enum ErrorCode {
     INVALID_TOKEN(1106, "Invalid token.", HttpStatus.UNAUTHORIZED),
 
     // User Management Errors
-    USER_EXISTED(1200, "User already existed.", HttpStatus.BAD_REQUEST),
-    USER_NOT_EXISTED(1201, "User not existed.", HttpStatus.NOT_FOUND),
+    USER_ALREADY_EXISTS(1200, "User already exists.", HttpStatus.BAD_REQUEST),
 
     // Data Management Errors
     DATA_NOT_FOUND(1300, "Data not found.", HttpStatus.NOT_FOUND),
-    DATA_EXISTED(1301, "Data already existed.", HttpStatus.UNPROCESSABLE_ENTITY),
+    DATA_ALREADY_EXISTS(1301, "Data already exists.", HttpStatus.UNPROCESSABLE_ENTITY),
     API_RESOURCE_NOT_FOUND(1302, "API resource not found.", HttpStatus.NOT_FOUND),
     ENTITY_NOT_FOUND(1303, "Entity not found.", HttpStatus.NOT_FOUND),
 
@@ -51,8 +50,8 @@ public enum ErrorCode {
     FILE_SIZE_LIMIT_EXCEEDED(1501, "File size exceeds the maximum limit.", HttpStatus.BAD_REQUEST),
     INVALID_FILE_EXTENSION(1502, "Invalid file extension.", HttpStatus.BAD_REQUEST),
     INVALID_FILE_CONTENT_TYPE(1503, "Invalid file content type.", HttpStatus.BAD_REQUEST),
-    FOLDER_EXISTED(1504, "Folder already existed.", HttpStatus.BAD_REQUEST),
-    FOLDER_NOT_EXISTED(1505, "Folder does not existed.", HttpStatus.BAD_REQUEST),
+    FOLDER_ALREADY_EXISTS(1504, "Folder already exists.", HttpStatus.BAD_REQUEST),
+    FOLDER_NOT_FOUND(1505, "Folder not found.", HttpStatus.BAD_REQUEST),
     ;
 
     int code;

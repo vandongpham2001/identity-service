@@ -15,9 +15,12 @@ public class AuthenticationRequestInterceptor implements RequestInterceptor {
         ServletRequestAttributes servletRequestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
-        var authHeader = servletRequestAttributes.getRequest().getHeader(HttpHeaders.AUTHORIZATION);
+        if (servletRequestAttributes == null) {
+            LOGGER.warn("No request context available. Authorization header will not be forwarded");
+            return;
+        }
 
-        LOGGER.info("Header: {}", authHeader);
+        var authHeader = servletRequestAttributes.getRequest().getHeader(HttpHeaders.AUTHORIZATION);
 
         if (StringUtils.hasText(authHeader)) template.header(HttpHeaders.AUTHORIZATION, authHeader);
     }

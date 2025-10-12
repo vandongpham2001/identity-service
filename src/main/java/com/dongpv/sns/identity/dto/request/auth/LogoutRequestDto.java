@@ -12,6 +12,6 @@ import lombok.experimental.FieldDefaults;
 public class LogoutRequestDto {
     @NotEmpty
     String token;
-    @NotEmpty
+
     String refreshToken;
 }

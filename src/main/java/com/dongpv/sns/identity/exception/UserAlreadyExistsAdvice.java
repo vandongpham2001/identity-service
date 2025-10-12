@@ -12,12 +12,12 @@ import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 import static com.dongpv.sns.identity.constant.CommonConstant.KEY_MESSAGE;
 
 @RestControllerAdvice
-public class UserExistAdvice {
-    @ExceptionHandler(UserExistException.class)
+public class UserAlreadyExistsAdvice {
+    @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public final BaseApiResponse handleUserExistException(UserExistException ex) {
+    public final BaseApiResponse handleUserExistException(UserAlreadyExistsException ex) {
         final MultiRecordErrorResponseDtoBase response =
-                new MultiRecordErrorResponseDtoBase(ErrorCode.USER_EXISTED.getCode(), ex.getMessage());
+                new MultiRecordErrorResponseDtoBase(ErrorCode.USER_ALREADY_EXISTS.getCode(), ex.getMessage());
         response.addFirstRecordDetail(KEY_MESSAGE, ex.getLocalizedMessage());
         return response;
     }

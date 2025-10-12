@@ -1,6 +1,8 @@
 package com.dongpv.sns.identity.exception;
 
 import com.dongpv.sns.identity.code.ErrorCode;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,6 +13,7 @@ import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 
 import static com.dongpv.sns.identity.constant.CommonConstant.KEY_MESSAGE;
 
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class DataNotFoundAdvice {
     @ExceptionHandler(DataNotFoundException.class)

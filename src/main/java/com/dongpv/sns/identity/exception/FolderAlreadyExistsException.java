@@ -5,20 +5,20 @@ import com.dongpv.sns.identity.code.ErrorCode;
 /**
  * @author DongPV
  */
-public class FolderExistedException extends RuntimeException {
+public class FolderAlreadyExistsException extends RuntimeException {
 
     /** */
     private static final long serialVersionUID = -5031930672336923314L;
 
     /** */
-    public FolderExistedException() {
-        this(ErrorCode.FOLDER_EXISTED.getMessage());
+    public FolderAlreadyExistsException() {
+        this(ErrorCode.FOLDER_ALREADY_EXISTS.getMessage());
     }
 
     /**
      * @param message
      */
-    public FolderExistedException(String message) {
+    public FolderAlreadyExistsException(String message) {
         super(message);
     }
 }

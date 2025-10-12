@@ -18,17 +18,17 @@ import static com.dongpv.sns.identity.constant.CommonConstant.KEY_EXCEPTION;
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
-public class FolderExistedAdvice {
+public class FolderAlreadyExistsAdvice {
 
     /**
      * @param ex
      * @return
      */
-    @ExceptionHandler(FolderExistedException.class)
+    @ExceptionHandler(FolderAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public final BaseApiResponse handleFolderExistsException(FolderExistedException ex) {
+    public final BaseApiResponse handleFolderExistsException(FolderAlreadyExistsException ex) {
         final MultiRecordErrorResponseDtoBase response = new MultiRecordErrorResponseDtoBase(
-                ErrorCode.FOLDER_EXISTED.getCode(), HttpStatus.BAD_REQUEST.getReasonPhrase());
+                ErrorCode.FOLDER_ALREADY_EXISTS.getCode(), HttpStatus.BAD_REQUEST.getReasonPhrase());
 
         response.addFirstRecordDetail(KEY_EXCEPTION, ex.getLocalizedMessage());
 

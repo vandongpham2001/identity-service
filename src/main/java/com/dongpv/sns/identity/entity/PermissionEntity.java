@@ -23,6 +23,8 @@ public class PermissionEntity extends BaseAuditEntity {
 
     String description;
 
+    String url;
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

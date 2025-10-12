@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.*;
-
 import com.dongpv.sns.identity.entity.listener.UserEntityListener;
 
 import lombok.*;
@@ -28,8 +27,8 @@ public class UserEntity extends BaseEntity {
 
     String password;
 
-    @Column(name = "email_verified", nullable = true, columnDefinition = "boolean default false")
-    Boolean emailVerified;
+    @Column(name = "email_verified")
+    Boolean emailVerified = false;
 
     @ManyToMany
     @JoinTable(

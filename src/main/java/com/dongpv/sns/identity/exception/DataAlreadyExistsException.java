@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-public class DataExistedException extends RuntimeException {
+public class DataAlreadyExistsException extends RuntimeException {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -15,7 +15,7 @@ public class DataExistedException extends RuntimeException {
     private static final String TYPE = "type";
     private static final String UNIQUE = "unique";
 
-    public DataExistedException(String fieldName, String fieldValue) {
+    public DataAlreadyExistsException(String fieldName, String fieldValue) {
         super(getMessage(fieldName, fieldValue));
     }
 

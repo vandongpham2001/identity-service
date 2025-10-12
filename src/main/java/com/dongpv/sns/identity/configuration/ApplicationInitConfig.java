@@ -47,19 +47,19 @@ public class ApplicationInitConfig {
             havingValue = "org.postgresql.Driver")
     ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
+            roleRepository.findByName(PredefinedRole.USER_ROLE)
+                    .orElseGet(() -> roleRepository.save(RoleEntity.builder()
+                            .name(PredefinedRole.USER_ROLE)
+                            .description(PredefinedRole.USER_ROLE)
+                            .build()));
+
+            RoleEntity adminRole = roleRepository.findByName(PredefinedRole.ADMIN_ROLE)
+                    .orElseGet(() -> roleRepository.save(RoleEntity.builder()
+                            .name(PredefinedRole.ADMIN_ROLE)
+                            .description(PredefinedRole.ADMIN_ROLE)
+                            .build()));
+
             if (userRepository.findByEmail(adminEmail).isEmpty()) {
-                RoleEntity userRole = RoleEntity.builder()
-                        .name(PredefinedRole.USER_ROLE)
-                        .description(PredefinedRole.USER_ROLE)
-                        .build();
-                roleRepository.save(userRole);
-
-                RoleEntity adminRole = RoleEntity.builder()
-                        .name(PredefinedRole.ADMIN_ROLE)
-                        .description(PredefinedRole.ADMIN_ROLE)
-                        .build();
-                roleRepository.save(adminRole);
-
                 var roles = new HashSet<RoleEntity>();
                 roles.add(adminRole);
                 UserEntity user = UserEntity.builder()

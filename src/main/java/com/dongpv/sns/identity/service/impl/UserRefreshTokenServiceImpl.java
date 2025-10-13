@@ -2,8 +2,11 @@ package com.dongpv.sns.identity.service.impl;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 import com.dongpv.sns.identity.code.ErrorCode;
+import com.dongpv.sns.identity.dto.request.auth.CreateRefreshTokenRequestDto;
+import com.dongpv.sns.identity.dto.request.auth.TokenCreationResult;
 import com.dongpv.sns.identity.exception.UnauthenticatedException;
 import com.dongpv.sns.identity.service.UserRefreshTokenService;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,19 +35,14 @@ public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
     JwtTokenPrivateUtils jwtTokenPrivateUtils;
 
     @Override
-    public UserRefreshTokenResponseDto createRefreshToken(String email) {
-        String rawToken = jwtTokenPrivateUtils.generateUUIDToken();
-        String hashedToken = jwtTokenPrivateUtils.hashToken(rawToken);
-
-        UserRefreshTokenEntity refreshToken = new UserRefreshTokenEntity();
-        refreshToken.setExpiryDate(Instant.now().plus(refreshTokenDuration, ChronoUnit.SECONDS));
-        refreshToken.setHashedToken(hashedToken);
-        refreshToken.setEmail(email);
-        refreshToken = userRefreshTokenRepository.save(refreshToken);
+    public UserRefreshTokenResponseDto createRefreshToken(CreateRefreshTokenRequestDto request) {
+        var refreshTokenCreation = buildRefreshTokenCreation(request);
+        var refreshToken = userRefreshTokenRepository.save(refreshTokenCreation.entity());
 
         return UserRefreshTokenResponseDto.builder()
-                .token(rawToken)
-                .expiryDate(refreshToken.getExpiryDate())
+                .id(refreshToken.getId())
+                .token(refreshTokenCreation.rawToken())
+                .expiryDate(refreshToken.getExpiredAt())
                 .email(refreshToken.getEmail())
                 .build();
     }
@@ -59,11 +57,58 @@ public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
     }
 
     @Override
-    public UserRefreshTokenEntity verifyExpiration(UserRefreshTokenEntity refreshToken) {
-        if (refreshToken.getExpiryDate().compareTo(Instant.now()) < 0) {
+    public UserRefreshTokenEntity verify(UserRefreshTokenEntity refreshToken) {
+        if (Boolean.TRUE.equals(refreshToken.getRevoked()) || Objects.nonNull(refreshToken.getReplacedBy())) {
+            throw new RefreshTokenException(ErrorCode.INVALID_OR_REVOKED_REFRESH_TOKEN.getMessage());
+        }
+
+        if (refreshToken.getExpiredAt().isBefore(Instant.now())) {
             userRefreshTokenRepository.delete(refreshToken);
             throw new RefreshTokenException(ErrorCode.REFRESH_TOKEN_EXPIRED.getMessage());
         }
+
         return refreshToken;
+    }
+
+    @Override
+    public void revoke(UserRefreshTokenEntity token) {
+        token.setRevoked(true);
+        userRefreshTokenRepository.save(token);
+    }
+
+    @Override
+    public UserRefreshTokenResponseDto rotate(UserRefreshTokenEntity oldToken) {
+        var refreshTokenCreation = buildRefreshTokenCreation(CreateRefreshTokenRequestDto.builder()
+                .userId(oldToken.getUserId())
+                .email(oldToken.getEmail())
+                .deviceInfo(oldToken.getDeviceInfo())
+                .build());
+        var refreshToken = userRefreshTokenRepository.save(refreshTokenCreation.entity());
+
+        oldToken.setRevoked(true);
+        oldToken.setReplacedBy(refreshToken.getId());
+        userRefreshTokenRepository.save(oldToken);
+
+        return UserRefreshTokenResponseDto.builder()
+                .id(refreshToken.getId())
+                .token(refreshTokenCreation.rawToken())
+                .expiryDate(refreshToken.getExpiredAt())
+                .email(refreshToken.getEmail())
+                .build();
+    }
+
+    private TokenCreationResult buildRefreshTokenCreation(CreateRefreshTokenRequestDto request) {
+        String rawToken = jwtTokenPrivateUtils.generateUUIDToken();
+        String hashedToken = jwtTokenPrivateUtils.hashToken(rawToken);
+
+        UserRefreshTokenEntity refreshToken = new UserRefreshTokenEntity();
+        refreshToken.setExpiredAt(Instant.now().plus(refreshTokenDuration, ChronoUnit.SECONDS));
+        refreshToken.setHashedToken(hashedToken);
+        refreshToken.setUserId(request.getUserId());
+        refreshToken.setEmail(request.getEmail());
+        refreshToken.setDeviceInfo(request.getDeviceInfo());
+        refreshToken.setRevoked(false);
+
+        return new TokenCreationResult(rawToken, refreshToken);
     }
 }

@@ -1,10 +1,15 @@
 package com.dongpv.sns.identity.service;
 
+import com.dongpv.sns.identity.dto.request.auth.CreateRefreshTokenRequestDto;
 import com.dongpv.sns.identity.dto.response.UserRefreshTokenResponseDto;
 import com.dongpv.sns.identity.entity.UserRefreshTokenEntity;
 
+import java.time.Duration;
+
 public interface UserRefreshTokenService {
-    UserRefreshTokenResponseDto createRefreshToken(String email);
+    UserRefreshTokenResponseDto createRefreshToken(CreateRefreshTokenRequestDto request);
     UserRefreshTokenEntity findByToken(String token);
-    UserRefreshTokenEntity verifyExpiration(UserRefreshTokenEntity token);
+    UserRefreshTokenEntity verify(UserRefreshTokenEntity token);
+    void revoke(UserRefreshTokenEntity token);
+    UserRefreshTokenResponseDto rotate(UserRefreshTokenEntity oldToken);
 }

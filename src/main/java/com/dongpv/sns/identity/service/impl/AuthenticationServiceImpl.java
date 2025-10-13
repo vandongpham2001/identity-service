@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import com.dongpv.sns.identity.code.TokenType;
+import com.dongpv.sns.identity.dto.request.auth.*;
 import com.dongpv.sns.identity.exception.CommonException;
 import com.dongpv.sns.identity.exception.UnauthenticatedException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
@@ -18,10 +19,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.dongpv.sns.identity.dto.request.auth.AuthenticationRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.IntrospectRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.LogoutRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.RefreshTokenRequestDto;
 import com.dongpv.sns.identity.dto.response.AuthenticationResponseDto;
 import com.dongpv.sns.identity.dto.response.IntrospectResponseDto;
 import com.dongpv.sns.identity.entity.InvalidatedTokenEntity;
@@ -68,7 +65,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         var token = jwtTokenPrivateUtils.generateToken(user);
-        var refreshToken = userRefreshTokenService.createRefreshToken(user.getEmail());
+        var createRefreshTokenRequestDto = CreateRefreshTokenRequestDto.builder()
+                .email(user.getEmail())
+                .userId(user.getId())
+                .build();
+        var refreshToken = userRefreshTokenService.createRefreshToken(createRefreshTokenRequestDto);
         Date expiredAt = new Date(
                 Instant.now().plus(jwtValidDuration, ChronoUnit.SECONDS).toEpochMilli());
 
@@ -114,7 +115,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (request.getRefreshToken() != null && !request.getRefreshToken().isEmpty()) {
             try {
                 var refreshTokenEntity = userRefreshTokenService.findByToken(request.getRefreshToken());
-                userRefreshTokenRepository.delete(refreshTokenEntity);
+                userRefreshTokenService.revoke(refreshTokenEntity);
             } catch (CommonException e) {
                 LOGGER.info("Refresh token already invalid or not found");
             }
@@ -124,13 +125,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponseDto refreshToken(RefreshTokenRequestDto request) {
         var refreshToken = userRefreshTokenService.findByToken(request.getRefreshToken());
-        String email = userRefreshTokenService.verifyExpiration(refreshToken).getEmail();
+        String email = userRefreshTokenService.verify(refreshToken).getEmail();
         var user = userRepository.findByEmail(email).orElseThrow(UnauthenticatedException::new);
         var token = jwtTokenPrivateUtils.generateToken(user);
-        var newRefreshToken = userRefreshTokenService.createRefreshToken(email);
+        var newRefreshToken = userRefreshTokenService.rotate(refreshToken);
         Date expiredAt = new Date(
                 Instant.now().plus(jwtValidDuration, ChronoUnit.SECONDS).toEpochMilli());
-        userRefreshTokenRepository.deleteById(refreshToken.getId());
 
         return AuthenticationResponseDto.builder()
                 .accessToken(token)

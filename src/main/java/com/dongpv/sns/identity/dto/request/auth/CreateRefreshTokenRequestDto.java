@@ -1,6 +1,4 @@
-package com.dongpv.sns.identity.dto.response;
-
-import java.time.Instant;
+package com.dongpv.sns.identity.dto.request.auth;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -10,9 +8,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserRefreshTokenResponseDto {
-    String id;
-    String token;
-    Instant expiryDate;
+public class CreateRefreshTokenRequestDto {
+    String userId;
+
     String email;
+
+    String deviceInfo;
 }

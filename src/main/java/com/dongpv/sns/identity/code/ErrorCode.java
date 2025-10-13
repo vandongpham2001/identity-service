@@ -41,9 +41,10 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCH(1402, "Password does not match.", HttpStatus.BAD_REQUEST),
     RESET_PASSWORD_LINK_EXPIRED(1403, "Reset password link has expired.", HttpStatus.BAD_REQUEST),
     REFRESH_TOKEN_EXPIRED(1404, "Refresh token has expired.", HttpStatus.BAD_REQUEST),
-    INVALID_USERNAME(1405, "Username must be at least {min} characters.", HttpStatus.BAD_REQUEST),
-    INVALID_PASSWORD(1406, "Password must be at least {min} characters.", HttpStatus.BAD_REQUEST),
-    INVALID_DOB(1407, "Your age must be at least {min}.", HttpStatus.BAD_REQUEST),
+    INVALID_OR_REVOKED_REFRESH_TOKEN(1405, "Refresh token is invalid or revoked.", HttpStatus.BAD_REQUEST),
+    INVALID_USERNAME(1406, "Username must be at least {min} characters.", HttpStatus.BAD_REQUEST),
+    INVALID_PASSWORD(1407, "Password must be at least {min} characters.", HttpStatus.BAD_REQUEST),
+    INVALID_DOB(1408, "Your age must be at least {min}.", HttpStatus.BAD_REQUEST),
 
     // File Management Errors
     FILE_STORAGE_ERROR(1500, "File storage error occurred.", HttpStatus.INTERNAL_SERVER_ERROR),

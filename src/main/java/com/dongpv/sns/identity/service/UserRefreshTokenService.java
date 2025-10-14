@@ -4,8 +4,6 @@ import com.dongpv.sns.identity.dto.request.auth.CreateRefreshTokenRequestDto;
 import com.dongpv.sns.identity.dto.response.UserRefreshTokenResponseDto;
 import com.dongpv.sns.identity.entity.UserRefreshTokenEntity;
 
-import java.time.Duration;
-
 public interface UserRefreshTokenService {
     UserRefreshTokenResponseDto createRefreshToken(CreateRefreshTokenRequestDto request);
     UserRefreshTokenEntity findByToken(String token);

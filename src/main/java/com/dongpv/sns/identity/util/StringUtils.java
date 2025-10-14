@@ -85,10 +85,7 @@ public class StringUtils {
     }
 
     public static boolean isNullOrEmpty(String value) {
-        if (value == null || value.isBlank()) {
-            return true;
-        }
-        return false;
+        return value == null || value.isBlank();
     }
 
     public static String mappingField(String text, Map<String, String> values) {

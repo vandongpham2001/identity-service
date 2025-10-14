@@ -24,15 +24,11 @@ public class ConvertUtils {
     }
 
     public static String[] asStringArray(List<String> list) {
-        String[] array = new String[list.size()];
-        array = list.toArray(array);
-        return array;
+        return list.toArray(new String[0]);
     }
 
     public static Long[] asLongArray(List<Long> list) {
-        Long[] array = new Long[list.size()];
-        array = list.toArray(array);
-        return array;
+        return list.toArray(new Long[0]);
     }
 
     public static Long[] asLongArray(String stringList) {

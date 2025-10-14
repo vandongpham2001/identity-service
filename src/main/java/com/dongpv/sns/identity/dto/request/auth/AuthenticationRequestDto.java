@@ -1,11 +1,8 @@
 package com.dongpv.sns.identity.dto.request.auth;
 
-import com.dongpv.sns.identity.validator.DobConstraint;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Data
 @Builder

@@ -5,7 +5,6 @@ import com.dongpv.sns.identity.dto.PageApiResponseDto;
 import com.dongpv.sns.identity.service.RoleService;
 import com.dongpv.sns.identity.util.FilterUtils;
 import com.dongpv.sns.identity.util.PaginationUtils;
-import jakarta.annotation.security.RolesAllowed;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

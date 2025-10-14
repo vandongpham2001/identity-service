@@ -37,4 +37,5 @@ out/
 .vscode/
 
 logs
-**/src/main/resources/application.yaml
+**/src/**/application.yaml
+**/src/**/application-prod.yaml

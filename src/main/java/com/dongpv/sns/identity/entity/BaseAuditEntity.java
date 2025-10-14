@@ -75,7 +75,6 @@ public abstract class BaseAuditEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         BaseAuditEntity that = (BaseAuditEntity) o;
         return Objects.equals(createdBy, that.createdBy)
                 && Objects.equals(updatedBy, that.updatedBy)
@@ -85,7 +84,7 @@ public abstract class BaseAuditEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), createdBy, updatedBy, createdAt, updatedAt);
+        return Objects.hash(createdBy, updatedBy, createdAt, updatedAt);
     }
 
     @Override

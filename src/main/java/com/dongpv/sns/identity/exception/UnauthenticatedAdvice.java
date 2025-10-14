@@ -25,7 +25,7 @@ public class UnauthenticatedAdvice {
      */
     @ExceptionHandler(UnauthenticatedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public final BaseApiResponse handleUnauthorizedUserException(UnauthorizedUserException ex) {
+    public final BaseApiResponse handleUnauthenticatedException(UnauthenticatedException ex) {
         final MultiRecordErrorResponseDtoBase response = new MultiRecordErrorResponseDtoBase(
                 ErrorCode.UNAUTHENTICATED.getCode(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
 

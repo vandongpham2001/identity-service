@@ -16,9 +16,9 @@ public class FileSizeLimitExceededException extends RuntimeException {
     }
 
     /**
-     * @param mesage
+     * @param message
      */
-    public FileSizeLimitExceededException(String mesage) {
-        super(mesage);
+    public FileSizeLimitExceededException(String message) {
+        super(message);
     }
 }

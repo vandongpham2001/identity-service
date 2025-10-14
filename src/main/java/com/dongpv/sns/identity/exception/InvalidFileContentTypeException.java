@@ -16,9 +16,9 @@ public class InvalidFileContentTypeException extends RuntimeException {
     }
 
     /**
-     * @param mesage
+     * @param message
      */
-    public InvalidFileContentTypeException(String mesage) {
-        super(mesage);
+    public InvalidFileContentTypeException(String message) {
+        super(message);
     }
 }

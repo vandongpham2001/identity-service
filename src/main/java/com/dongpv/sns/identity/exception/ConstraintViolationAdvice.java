@@ -83,7 +83,7 @@ public class ConstraintViolationAdvice {
         } else if (fieldPath.startsWith("value")) {
             return "value";
 
-        } else if (fieldPath.equals("")) {
+        } else if (fieldPath.isEmpty()) {
             return "request";
         }
 

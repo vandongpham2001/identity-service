@@ -13,7 +13,7 @@ public class ParserUtils {
         try {
             return parser.apply(value);
         } catch (NumberFormatException ex) {
-            LOGGER.error("Failed to parse value");
+            LOGGER.error("Failed to parse value: '{}'", value, ex);
             return null;
         }
     }
@@ -22,7 +22,7 @@ public class ParserUtils {
         try {
             return parser.apply(value);
         } catch (NumberFormatException ex) {
-            LOGGER.error("Failed to parse value");
+            LOGGER.error("Failed to parse value: '{}'", value, ex);
             return defaultValue;
         }
     }

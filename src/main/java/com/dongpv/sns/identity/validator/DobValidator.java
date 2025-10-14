@@ -7,7 +7,9 @@ import java.util.Objects;
 import com.dongpv.sns.identity.code.ErrorCode;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DobValidator implements ConstraintValidator<DobConstraint, LocalDate> {
 
     private int min;
@@ -56,6 +58,7 @@ public class DobValidator implements ConstraintValidator<DobConstraint, LocalDat
             var errorCode = ErrorCode.valueOf(messageTemplate);
             return errorCode.getMessage().replace(PLACEHOLDER_PATTERN, String.valueOf(min));
         } catch (IllegalArgumentException ignored) {
+            LOGGER.warn("Invalid error code '{}', fallback to INVALID_DOB", messageTemplate);
             // Fall back to default DOB error message if messageTemplate is not a valid ErrorCode
             return ErrorCode.INVALID_DOB.getMessage().replace(PLACEHOLDER_PATTERN, String.valueOf(min));
         }

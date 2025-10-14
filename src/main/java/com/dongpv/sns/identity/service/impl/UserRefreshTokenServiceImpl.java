@@ -9,6 +9,7 @@ import com.dongpv.sns.identity.dto.request.auth.CreateRefreshTokenRequestDto;
 import com.dongpv.sns.identity.dto.request.auth.TokenCreationResult;
 import com.dongpv.sns.identity.exception.UnauthenticatedException;
 import com.dongpv.sns.identity.service.UserRefreshTokenService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
     JwtTokenPrivateUtils jwtTokenPrivateUtils;
 
     @Override
+    @Transactional
     public UserRefreshTokenResponseDto createRefreshToken(CreateRefreshTokenRequestDto request) {
         var refreshTokenCreation = buildRefreshTokenCreation(request);
         var refreshToken = userRefreshTokenRepository.save(refreshTokenCreation.entity());
@@ -57,6 +59,7 @@ public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
     }
 
     @Override
+    @Transactional
     public UserRefreshTokenEntity verify(UserRefreshTokenEntity refreshToken) {
         if (Boolean.TRUE.equals(refreshToken.getRevoked()) || Objects.nonNull(refreshToken.getReplacedBy())) {
             throw new RefreshTokenException(ErrorCode.INVALID_OR_REVOKED_REFRESH_TOKEN.getMessage());
@@ -71,12 +74,14 @@ public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
     }
 
     @Override
+    @Transactional
     public void revoke(UserRefreshTokenEntity token) {
         token.setRevoked(true);
         userRefreshTokenRepository.save(token);
     }
 
     @Override
+    @Transactional
     public UserRefreshTokenResponseDto rotate(UserRefreshTokenEntity oldToken) {
         var refreshTokenCreation = buildRefreshTokenCreation(CreateRefreshTokenRequestDto.builder()
                 .userId(oldToken.getUserId())

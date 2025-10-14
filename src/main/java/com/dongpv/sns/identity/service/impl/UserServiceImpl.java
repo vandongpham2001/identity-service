@@ -8,6 +8,7 @@ import com.dongpv.sns.identity.exception.UserAlreadyExistsException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
 import com.dongpv.sns.identity.service.UserService;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public UserResponseDto create(CreateUserRequestDto request) {
         UserEntity entity = UserMapper.INSTANCE.toCreateEntity(request);
         entity.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -56,6 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponseDto update(String id, UpdateUserRequestDto request) {
         UserEntity entity = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
@@ -67,6 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delete(String id) {
         var entity = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         entity.softDelete();

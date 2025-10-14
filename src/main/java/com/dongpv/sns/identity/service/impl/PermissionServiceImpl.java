@@ -4,6 +4,7 @@ import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
 import com.dongpv.sns.identity.dto.request.admin.permission.UpdatePermissionRequestDto;
 import com.dongpv.sns.identity.exception.DataNotFoundException;
 import com.dongpv.sns.identity.service.PermissionService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class PermissionServiceImpl implements PermissionService {
     PermissionRepository permissionRepository;
 
     @Override
+    @Transactional
     public PermissionResponseDto create(CreatePermissionRequestDto request) {
         PermissionEntity entity = PermissionMapper.INSTANCE.toCreateEntity(request);
         entity = permissionRepository.save(entity);
@@ -35,6 +37,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Transactional
     public PermissionResponseDto update(String id, UpdatePermissionRequestDto request) {
         PermissionEntity entity = permissionRepository.findById(id).orElseThrow(DataNotFoundException::new);
         PermissionMapper.INSTANCE.toUpdateEntity(entity, request);
@@ -43,6 +46,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Transactional
     public void delete(String id) {
         permissionRepository.deleteById(id);
     }

@@ -6,6 +6,7 @@ import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
 import com.dongpv.sns.identity.entity.RoleEntity;
 import com.dongpv.sns.identity.exception.DataNotFoundException;
 import com.dongpv.sns.identity.service.RoleService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class RoleServiceImpl implements RoleService {
     PermissionRepository permissionRepository;
 
     @Override
+    @Transactional
     public RoleResponseDto save(CreateRoleRequestDto request) {
         var entityOpt = roleRepository.findByName(request.getName());
         var entity = entityOpt.map(existRole -> {
@@ -45,6 +47,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void delete(String id) {
         roleRepository.deleteById(id);
     }

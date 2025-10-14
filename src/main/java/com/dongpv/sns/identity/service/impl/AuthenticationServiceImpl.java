@@ -5,14 +5,13 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-import com.dongpv.sns.identity.code.TokenType;
 import com.dongpv.sns.identity.dto.request.auth.*;
 import com.dongpv.sns.identity.exception.CommonException;
 import com.dongpv.sns.identity.exception.UnauthenticatedException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
-import com.dongpv.sns.identity.repository.UserRefreshTokenRepository;
 import com.dongpv.sns.identity.service.AuthenticationService;
 import com.dongpv.sns.identity.service.UserRefreshTokenService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,7 +45,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     UserRepository userRepository;
     InvalidatedTokenRepository invalidatedTokenRepository;
     UserRefreshTokenService userRefreshTokenService;
-    UserRefreshTokenRepository userRefreshTokenRepository;
     JwtTokenPrivateUtils jwtTokenPrivateUtils;
     JwtTokenPublicUtils jwtTokenPublicUtils;
     AuthenticationManager authenticationManager;
@@ -96,6 +94,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public void logout(LogoutRequestDto request) throws ParseException, JOSEException {
         try {
             var signToken = jwtTokenPublicUtils.verifyToken(request.getToken());

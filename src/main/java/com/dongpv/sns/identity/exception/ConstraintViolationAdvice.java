@@ -22,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
  * @author DongPV
  */
 @Slf4j
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ConstraintViolationAdvice {
 
     @ExceptionHandler(ConstraintViolationException.class)

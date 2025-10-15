@@ -13,8 +13,8 @@ import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 
 import static com.dongpv.sns.identity.constant.CommonConstant.KEY_MESSAGE;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class DataNotFoundAdvice {
     @ExceptionHandler(DataNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

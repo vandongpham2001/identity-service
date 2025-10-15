@@ -18,8 +18,8 @@ import static com.dongpv.sns.identity.constant.CommonConstant.KEY_EXCEPTION;
 /**
  * @author DongPV
  */
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class FileSizeLimitExceededAdvice {
 
     /**

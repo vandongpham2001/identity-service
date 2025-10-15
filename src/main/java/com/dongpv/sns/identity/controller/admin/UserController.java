@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<UserResponseDto> update(@PathVariable String id, @RequestBody UpdateUserRequestDto request) {
+    public ApiResponse<UserResponseDto> update(@PathVariable String id, @RequestBody @Valid UpdateUserRequestDto request) {
         return ApiResponse.ok(userService.update(id, request));
     }
 

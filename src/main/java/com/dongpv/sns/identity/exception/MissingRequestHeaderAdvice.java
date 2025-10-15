@@ -17,16 +17,16 @@ import static com.dongpv.sns.identity.constant.CommonConstant.KEY_EXCEPTION;
 /**
  * @author DongPV
  */
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class MissingRequestHeaderAdvice {
 
     /**
      * @param ex
      * @return
      */
-    @ExceptionHandler(MissingRequestHeaderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MissingRequestHeaderException.class)
     public final BaseApiResponse handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
         final MultiRecordErrorResponseDtoBase response = new MultiRecordErrorResponseDtoBase(
                 ErrorCode.INVALID_FIELD.getCode(), HttpStatus.BAD_REQUEST.getReasonPhrase());

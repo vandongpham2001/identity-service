@@ -1,6 +1,6 @@
 package com.dongpv.sns.identity.exception;
 
-import com.dongpv.sns.identity.code.ErrorCode;
+import jakarta.validation.ConstraintViolation;
 import jakarta.xml.bind.UnmarshalException;
 
 import org.springframework.beans.TypeMismatchException;
@@ -25,6 +25,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.dongpv.sns.identity.code.ErrorCode;
 import com.dongpv.sns.identity.dto.BaseApiResponse;
 import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 
@@ -39,6 +40,8 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String KEY_EXCEPTION = "exception";
     private static final String LOG_TEMPLATE = "{}::{}() - {}";
+    private static final String ATTRIBUTE_MIN = "min";
+    private static final String PLACEHOLDER_PATTERN = "{" + ATTRIBUTE_MIN + "}";
 
     @ExceptionHandler(MultipartException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -142,12 +145,20 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
 
     private void setFieldErrors(BindingResult bindingResult, MultiRecordErrorResponseDtoBase response) {
 
+        // Handle validate field level
         for (final FieldError fieldError : bindingResult.getFieldErrors()) {
             final String field = fieldError.getField();
             final String objectName = fieldError.getObjectName();
             String message = fieldError.getDefaultMessage();
 
             if (message != null) {
+                ErrorCode errorCode = resolveErrorCode(message);
+                Integer minValue = extractMinValue(fieldError);
+
+                message = errorCode != null ? errorCode.getMessage() : message;
+                if (minValue != null) {
+                    message = message.replace(PLACEHOLDER_PATTERN, String.valueOf(minValue));
+                }
                 message = message.replaceAll(field + " ", "");
             }
 
@@ -157,5 +168,27 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
 
             response.addFirstRecordDetail(field, message);
         }
+    }
+
+    private ErrorCode resolveErrorCode(String message) {
+        try {
+            return ErrorCode.valueOf(message);
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("Invalid error code from message", e);
+            return null;
+        }
+    }
+
+    private Integer extractMinValue(FieldError fieldError) {
+        try {
+            ConstraintViolation<?> violation = fieldError.unwrap(ConstraintViolation.class);
+            Object minAttr = violation.getConstraintDescriptor().getAttributes().get(ATTRIBUTE_MIN);
+            if (minAttr instanceof Integer integer) {
+                return integer;
+            }
+        } catch (Exception e) {
+            LOGGER.warn("Can't get min value from annotation", e);
+        }
+        return null;
     }
 }

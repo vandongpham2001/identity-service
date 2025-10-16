@@ -43,7 +43,13 @@ public class UserRefreshTokenEntity extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         UserRefreshTokenEntity that = (UserRefreshTokenEntity) o;
-        return Objects.equals(hashedToken, that.hashedToken) && Objects.equals(expiredAt, that.expiredAt) && Objects.equals(email, that.email) && Objects.equals(userId, that.userId) && Objects.equals(deviceInfo, that.deviceInfo) && Objects.equals(revoked, that.revoked) && Objects.equals(replacedBy, that.replacedBy);
+        return Objects.equals(hashedToken, that.hashedToken)
+                && Objects.equals(expiredAt, that.expiredAt)
+                && Objects.equals(email, that.email)
+                && Objects.equals(userId, that.userId)
+                && Objects.equals(deviceInfo, that.deviceInfo)
+                && Objects.equals(revoked, that.revoked)
+                && Objects.equals(replacedBy, that.replacedBy);
     }
 
     @Override

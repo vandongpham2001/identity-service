@@ -6,8 +6,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 import com.dongpv.sns.identity.validator.DobConstraint;
-import com.dongpv.sns.identity.validator.UniqueEmailConstraint;
-import com.dongpv.sns.identity.validator.UniqueUsernameConstraint;
+import com.dongpv.sns.identity.validator.UniqueEmailOnCreateConstraint;
+import com.dongpv.sns.identity.validator.UniqueUsernameOnCreateConstraint;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,11 +19,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateUserRequestDto {
     @Email
-    @UniqueEmailConstraint(message = "EMAIL_ALREADY_EXISTS")
+    @UniqueEmailOnCreateConstraint(message = "EMAIL_ALREADY_EXISTS")
     String email;
 
     @Size(min = 3, message = "INVALID_USERNAME")
-    @UniqueUsernameConstraint(message = "USERNAME_ALREADY_EXISTS")
+    @UniqueUsernameOnCreateConstraint(message = "USERNAME_ALREADY_EXISTS")
     String username;
 
     @Size(min = 8, message = "INVALID_PASSWORD")

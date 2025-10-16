@@ -45,6 +45,8 @@ public enum ErrorCode {
     INVALID_USERNAME(1406, "Username must be at least {min} characters.", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD(1407, "Password must be at least {min} characters.", HttpStatus.BAD_REQUEST),
     INVALID_DOB(1408, "Your age must be at least {min}.", HttpStatus.BAD_REQUEST),
+    EMAIL_ALREADY_EXISTS(1409, "Email already exists.", HttpStatus.BAD_REQUEST),
+    USERNAME_ALREADY_EXISTS(1409, "Username already exists.", HttpStatus.BAD_REQUEST),
 
     // File Management Errors
     FILE_STORAGE_ERROR(1500, "File storage error occurred.", HttpStatus.INTERNAL_SERVER_ERROR),

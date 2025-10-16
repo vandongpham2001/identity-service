@@ -4,20 +4,21 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-import com.dongpv.sns.identity.code.ErrorCode;
-import com.dongpv.sns.identity.dto.request.auth.CreateRefreshTokenRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.TokenCreationResult;
-import com.dongpv.sns.identity.exception.UnauthenticatedException;
-import com.dongpv.sns.identity.service.UserRefreshTokenService;
 import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.dongpv.sns.identity.code.ErrorCode;
+import com.dongpv.sns.identity.dto.request.auth.CreateRefreshTokenRequestDto;
+import com.dongpv.sns.identity.dto.request.auth.TokenCreationResult;
 import com.dongpv.sns.identity.dto.response.UserRefreshTokenResponseDto;
 import com.dongpv.sns.identity.entity.UserRefreshTokenEntity;
 import com.dongpv.sns.identity.exception.RefreshTokenException;
+import com.dongpv.sns.identity.exception.UnauthenticatedException;
 import com.dongpv.sns.identity.repository.UserRefreshTokenRepository;
 import com.dongpv.sns.identity.security.JwtTokenPrivateUtils;
+import com.dongpv.sns.identity.service.UserRefreshTokenService;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -53,9 +54,7 @@ public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
     public UserRefreshTokenEntity findByToken(String token) {
         String hashedToken = jwtTokenPrivateUtils.hashToken(token);
 
-        return userRefreshTokenRepository
-                .findByHashedToken(hashedToken)
-                .orElseThrow(UnauthenticatedException::new);
+        return userRefreshTokenRepository.findByHashedToken(hashedToken).orElseThrow(UnauthenticatedException::new);
     }
 
     @Override

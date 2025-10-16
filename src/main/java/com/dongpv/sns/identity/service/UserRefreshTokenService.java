@@ -6,8 +6,12 @@ import com.dongpv.sns.identity.entity.UserRefreshTokenEntity;
 
 public interface UserRefreshTokenService {
     UserRefreshTokenResponseDto createRefreshToken(CreateRefreshTokenRequestDto request);
+
     UserRefreshTokenEntity findByToken(String token);
+
     UserRefreshTokenEntity verify(UserRefreshTokenEntity token);
+
     void revoke(UserRefreshTokenEntity token);
+
     UserRefreshTokenResponseDto rotate(UserRefreshTokenEntity oldToken);
 }

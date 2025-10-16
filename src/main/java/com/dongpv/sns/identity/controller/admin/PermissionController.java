@@ -2,19 +2,19 @@ package com.dongpv.sns.identity.controller.admin;
 
 import java.util.Map;
 
-import com.dongpv.sns.identity.constant.RouteConstant;
-import com.dongpv.sns.identity.dto.PageApiResponseDto;
-import com.dongpv.sns.identity.dto.request.admin.permission.UpdatePermissionRequestDto;
-import com.dongpv.sns.identity.service.PermissionService;
-import com.dongpv.sns.identity.util.FilterUtils;
-import com.dongpv.sns.identity.util.PaginationUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.dongpv.sns.identity.constant.RouteConstant;
 import com.dongpv.sns.identity.dto.ApiResponse;
+import com.dongpv.sns.identity.dto.PageApiResponseDto;
 import com.dongpv.sns.identity.dto.request.admin.permission.CreatePermissionRequestDto;
+import com.dongpv.sns.identity.dto.request.admin.permission.UpdatePermissionRequestDto;
 import com.dongpv.sns.identity.dto.response.PermissionResponseDto;
+import com.dongpv.sns.identity.service.PermissionService;
+import com.dongpv.sns.identity.util.FilterUtils;
+import com.dongpv.sns.identity.util.PaginationUtils;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,8 @@ public class PermissionController {
     PermissionService permissionService;
 
     @GetMapping
-    public ApiResponse<PageApiResponseDto<PermissionResponseDto>> filter(@RequestParam(required = false) final Map<String, String> requestParams) {
+    public ApiResponse<PageApiResponseDto<PermissionResponseDto>> filter(
+            @RequestParam(required = false) final Map<String, String> requestParams) {
         PageRequest pageRequest = PaginationUtils.generatePageRequest(requestParams);
         var filter = FilterUtils.handleFilterRequest(requestParams, false);
         return ApiResponse.ok(PaginationUtils.buildPageRes(permissionService.filter(pageRequest, filter)));
@@ -48,7 +49,8 @@ public class PermissionController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<PermissionResponseDto> update(@PathVariable String id, @RequestBody UpdatePermissionRequestDto request) {
+    public ApiResponse<PermissionResponseDto> update(
+            @PathVariable String id, @RequestBody UpdatePermissionRequestDto request) {
         return ApiResponse.ok(permissionService.update(id, request));
     }
 

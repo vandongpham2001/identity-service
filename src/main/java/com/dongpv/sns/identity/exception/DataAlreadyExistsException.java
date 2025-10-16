@@ -10,6 +10,7 @@ public class DataAlreadyExistsException extends RuntimeException {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
     private static final String FIELD_NAME = "field_name";
     private static final String FIELD_VALUE = "field_value";
     private static final String TYPE = "type";

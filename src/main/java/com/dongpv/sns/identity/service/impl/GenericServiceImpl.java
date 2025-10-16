@@ -2,11 +2,11 @@ package com.dongpv.sns.identity.service.impl;
 
 import java.util.List;
 
-import com.dongpv.sns.identity.exception.DataNotFoundException;
-import com.dongpv.sns.identity.service.GenericService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.dongpv.sns.identity.exception.DataNotFoundException;
 import com.dongpv.sns.identity.mapper.GenericMapper;
+import com.dongpv.sns.identity.service.GenericService;
 
 import lombok.RequiredArgsConstructor;
 

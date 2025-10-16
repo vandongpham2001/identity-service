@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.*;
+
 import com.dongpv.sns.identity.entity.listener.UserEntityListener;
 
 import lombok.*;

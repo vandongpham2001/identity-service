@@ -11,10 +11,10 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
-import com.dongpv.sns.identity.exception.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.dongpv.sns.identity.exception.UnauthenticatedException;
 import com.dongpv.sns.identity.exception.UnauthorizedUserException;
 import com.dongpv.sns.identity.repository.InvalidatedTokenRepository;
 import com.nimbusds.jose.JOSEException;

@@ -47,13 +47,15 @@ public class ApplicationInitConfig {
             havingValue = "org.postgresql.Driver")
     ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
-            roleRepository.findByName(PredefinedRole.USER_ROLE)
+            roleRepository
+                    .findByName(PredefinedRole.USER_ROLE)
                     .orElseGet(() -> roleRepository.save(RoleEntity.builder()
                             .name(PredefinedRole.USER_ROLE)
                             .description(PredefinedRole.USER_ROLE)
                             .build()));
 
-            RoleEntity adminRole = roleRepository.findByName(PredefinedRole.ADMIN_ROLE)
+            RoleEntity adminRole = roleRepository
+                    .findByName(PredefinedRole.ADMIN_ROLE)
                     .orElseGet(() -> roleRepository.save(RoleEntity.builder()
                             .name(PredefinedRole.ADMIN_ROLE)
                             .description(PredefinedRole.ADMIN_ROLE)

@@ -1,6 +1,7 @@
 package com.dongpv.sns.identity.exception;
 
-import com.dongpv.sns.identity.code.ErrorCode;
+import static com.dongpv.sns.identity.constant.CommonConstant.KEY_EXCEPTION;
+
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -10,10 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import com.dongpv.sns.identity.code.ErrorCode;
 import com.dongpv.sns.identity.dto.BaseApiResponse;
 import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
-
-import static com.dongpv.sns.identity.constant.CommonConstant.KEY_EXCEPTION;
 
 /**
  * @author DongPV

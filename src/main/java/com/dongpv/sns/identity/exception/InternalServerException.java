@@ -1,8 +1,9 @@
 package com.dongpv.sns.identity.exception;
 
-import com.dongpv.sns.identity.code.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.dongpv.sns.identity.code.ErrorCode;
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class InternalServerException extends RuntimeException {

@@ -11,12 +11,13 @@ import com.dongpv.sns.identity.entity.PermissionEntity;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<PermissionEntity, String> {
-    @Query("""
-        SELECT p
-        FROM PermissionEntity p
-        WHERE COALESCE(:keyword, '') = ''
-            OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
-            OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
-    """)
+    @Query(
+            """
+		SELECT p
+		FROM PermissionEntity p
+		WHERE COALESCE(:keyword, '') = ''
+			OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+			OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
+	""")
     Page<PermissionEntity> filter(@Param("keyword") String keyword, Pageable pageable);
 }

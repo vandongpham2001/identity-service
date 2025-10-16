@@ -1,5 +1,7 @@
 package com.dongpv.sns.identity.exception;
 
+import static com.dongpv.sns.identity.constant.CommonConstant.KEY_MESSAGE;
+
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -9,8 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.dongpv.sns.identity.dto.BaseApiResponse;
 import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
-
-import static com.dongpv.sns.identity.constant.CommonConstant.KEY_MESSAGE;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)

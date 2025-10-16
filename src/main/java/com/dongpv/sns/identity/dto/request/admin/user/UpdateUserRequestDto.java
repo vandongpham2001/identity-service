@@ -7,8 +7,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 import com.dongpv.sns.identity.validator.DobConstraint;
-import com.dongpv.sns.identity.validator.UniqueEmailConstraint;
-import com.dongpv.sns.identity.validator.UniqueUsernameConstraint;
+import com.dongpv.sns.identity.validator.UniqueEmailOnUpdateConstraint;
+import com.dongpv.sns.identity.validator.UniqueUsernameOnUpdateConstraint;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,15 +18,15 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@UniqueEmailOnUpdateConstraint(message = "EMAIL_ALREADY_EXISTS")
+@UniqueUsernameOnUpdateConstraint(message = "USERNAME_ALREADY_EXISTS")
 public class UpdateUserRequestDto {
     String id;
 
     @Email
-    @UniqueEmailConstraint(message = "EMAIL_ALREADY_EXISTS")
     String email;
 
     @Size(min = 3, message = "INVALID_USERNAME")
-    @UniqueUsernameConstraint(message = "USERNAME_ALREADY_EXISTS")
     String username;
 
     @Size(min = 8, message = "INVALID_PASSWORD")
@@ -36,7 +36,7 @@ public class UpdateUserRequestDto {
 
     String lastName;
 
-    @DobConstraint(min = 18, message = "INVALID_DOB")
+    @DobConstraint(min = 14, message = "INVALID_DOB")
     LocalDate dob;
 
     List<String> roles;

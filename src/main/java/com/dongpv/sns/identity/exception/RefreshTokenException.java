@@ -6,7 +6,7 @@ public class RefreshTokenException extends RuntimeException {
     public RefreshTokenException() {
         this(ErrorCode.REFRESH_TOKEN_EXPIRED.getMessage());
     }
-    
+
     public RefreshTokenException(String message) {
         super(String.format(message));
     }

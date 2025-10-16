@@ -6,7 +6,7 @@ public class OtpInvalidException extends RuntimeException {
     public OtpInvalidException() {
         this(ErrorCode.INVALID_OTP.getMessage());
     }
-    
+
     public OtpInvalidException(String message) {
         super(String.format(message));
     }

@@ -10,8 +10,10 @@ import lombok.*;
 public class BaseFilterRequestDto {
     @Builder.Default
     private String keyword = "";
+
     @Builder.Default
     private String sortColumn = "createdAt";
+
     @Builder.Default
     private String sortType = "desc";
 }

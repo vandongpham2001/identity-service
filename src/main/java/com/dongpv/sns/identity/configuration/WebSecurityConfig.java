@@ -31,20 +31,13 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(
-    securedEnabled = true,
-    jsr250Enabled = true
-)
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-private static final String[] PUBLIC_ENDPOINTS = {
-        "/auth/register",
-        "/auth/login",
-        "/auth/introspect",
-        "/auth/logout",
-        "/auth/refresh-token",
-};
+    private static final String[] PUBLIC_ENDPOINTS = {
+        "/auth/register", "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh-token",
+    };
 
     @Value("${web.url}")
     private String webUrl;

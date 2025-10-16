@@ -1,7 +1,8 @@
 package com.dongpv.sns.identity.exception;
 
-import com.dongpv.sns.identity.code.ErrorCode;
 import java.io.Serial;
+
+import com.dongpv.sns.identity.code.ErrorCode;
 
 /**
  * @author DongPV

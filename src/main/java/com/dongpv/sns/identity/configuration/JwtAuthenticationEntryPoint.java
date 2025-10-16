@@ -1,9 +1,9 @@
 package com.dongpv.sns.identity.configuration;
 
+import static com.dongpv.sns.identity.constant.CommonConstant.KEY_EXCEPTION;
+
 import java.io.IOException;
 
-import com.dongpv.sns.identity.code.ErrorCode;
-import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -12,9 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
+import com.dongpv.sns.identity.code.ErrorCode;
+import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static com.dongpv.sns.identity.constant.CommonConstant.KEY_EXCEPTION;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
@@ -25,9 +25,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        final MultiRecordErrorResponseDtoBase responseDto =
-                new MultiRecordErrorResponseDtoBase(
-                        ErrorCode.UNAUTHENTICATED.getCode(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        final MultiRecordErrorResponseDtoBase responseDto = new MultiRecordErrorResponseDtoBase(
+                ErrorCode.UNAUTHENTICATED.getCode(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         responseDto.addDetail(KEY_EXCEPTION, authException.getLocalizedMessage());
         String responseMsg = objectMapper.writeValueAsString(responseDto);
         response.getWriter().write(responseMsg);

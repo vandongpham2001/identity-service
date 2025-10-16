@@ -1,11 +1,13 @@
 package com.dongpv.sns.identity.exception;
 
-import com.dongpv.sns.identity.code.ErrorCode;
-import lombok.Getter;
+import java.io.Serial;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.io.Serial;
+import com.dongpv.sns.identity.code.ErrorCode;
+
+import lombok.Getter;
 
 @Getter
 @ResponseStatus(HttpStatus.ACCEPTED)

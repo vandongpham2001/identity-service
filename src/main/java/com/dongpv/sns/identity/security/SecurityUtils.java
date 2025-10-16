@@ -3,12 +3,13 @@ package com.dongpv.sns.identity.security;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.dongpv.sns.identity.constant.AuthoritiesConstant;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+
+import com.dongpv.sns.identity.constant.AuthoritiesConstant;
 
 /** Utility class for Spring Security. */
 public final class SecurityUtils {

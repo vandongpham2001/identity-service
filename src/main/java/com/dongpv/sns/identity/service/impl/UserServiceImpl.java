@@ -7,6 +7,7 @@ import java.util.Objects;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import com.dongpv.sns.identity.dto.request.admin.user.UpdateUserRequestDto;
 import com.dongpv.sns.identity.dto.response.UserResponseDto;
 import com.dongpv.sns.identity.entity.RoleEntity;
 import com.dongpv.sns.identity.entity.UserEntity;
+import com.dongpv.sns.identity.exception.UserAlreadyExistsException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
 import com.dongpv.sns.identity.mapper.UserMapper;
 import com.dongpv.sns.identity.repository.RoleRepository;
@@ -51,7 +53,11 @@ public class UserServiceImpl implements UserService {
         HashSet<RoleEntity> roles = new HashSet<>();
         roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
         entity.setRoles(roles);
-        entity = userRepository.save(entity);
+        try {
+            entity = userRepository.saveAndFlush(entity);
+        } catch (DataIntegrityViolationException e) {
+            throw new UserAlreadyExistsException();
+        }
         return UserMapper.INSTANCE.toResponseDto(entity);
     }
 
@@ -71,7 +77,11 @@ public class UserServiceImpl implements UserService {
             entity.setRoles(new HashSet<>(roles));
         }
 
-        entity = userRepository.save(entity);
+        try {
+            entity = userRepository.saveAndFlush(entity);
+        } catch (DataIntegrityViolationException e) {
+            throw new UserAlreadyExistsException();
+        }
         return UserMapper.INSTANCE.toResponseDto(entity);
     }
 

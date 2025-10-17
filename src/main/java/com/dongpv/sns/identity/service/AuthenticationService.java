@@ -2,16 +2,16 @@ package com.dongpv.sns.identity.service;
 
 import java.text.ParseException;
 
-import com.dongpv.sns.identity.dto.request.auth.AuthenticationRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.IntrospectRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.LogoutRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.RefreshTokenRequestDto;
+import com.dongpv.sns.identity.dto.request.auth.*;
 import com.dongpv.sns.identity.dto.response.AuthenticationResponseDto;
 import com.dongpv.sns.identity.dto.response.IntrospectResponseDto;
+import com.dongpv.sns.identity.dto.response.RegisterResponseDto;
 import com.nimbusds.jose.JOSEException;
 
 public interface AuthenticationService {
     AuthenticationResponseDto login(AuthenticationRequestDto request);
+
+    RegisterResponseDto register(RegisterRequestDto request);
 
     IntrospectResponseDto introspect(IntrospectRequestDto request) throws JOSEException, ParseException;
 

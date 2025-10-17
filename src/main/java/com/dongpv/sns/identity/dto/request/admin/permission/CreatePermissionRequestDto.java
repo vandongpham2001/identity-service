@@ -1,5 +1,6 @@
 package com.dongpv.sns.identity.dto.request.admin.permission;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreatePermissionRequestDto {
+    @NotBlank
     String name;
     String description;
 }

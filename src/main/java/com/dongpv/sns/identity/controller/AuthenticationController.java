@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.dongpv.sns.identity.constant.RouteConstant;
 import com.dongpv.sns.identity.dto.ApiResponse;
-import com.dongpv.sns.identity.dto.request.auth.AuthenticationRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.IntrospectRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.LogoutRequestDto;
-import com.dongpv.sns.identity.dto.request.auth.RefreshTokenRequestDto;
+import com.dongpv.sns.identity.dto.request.auth.*;
 import com.dongpv.sns.identity.dto.response.AuthenticationResponseDto;
 import com.dongpv.sns.identity.dto.response.IntrospectResponseDto;
+import com.dongpv.sns.identity.dto.response.RegisterResponseDto;
 import com.dongpv.sns.identity.dto.response.UserResponseDto;
 import com.dongpv.sns.identity.service.AuthenticationService;
 import com.dongpv.sns.identity.service.UserService;
@@ -40,8 +38,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ApiResponse<AuthenticationResponseDto> register(@Valid @RequestBody AuthenticationRequestDto request) {
-        var result = authenticationService.login(request);
+    public ApiResponse<RegisterResponseDto> register(@Valid @RequestBody RegisterRequestDto request) {
+        var result = authenticationService.register(request);
         return ApiResponse.ok(result);
     }
 

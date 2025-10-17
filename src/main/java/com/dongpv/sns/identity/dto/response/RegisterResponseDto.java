@@ -1,6 +1,7 @@
 package com.dongpv.sns.identity.dto.response;
 
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.Date;
 
 import com.dongpv.sns.identity.code.Gender;
 import lombok.*;
@@ -11,14 +12,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponseDto {
-    String id;
-
+public class RegisterResponseDto {
     String email;
-
-    String username;
-
+    String firstName;
+    String lastName;
+    LocalDate dob;
     Gender gender;
-
-    Set<RoleResponseDto> roles;
 }

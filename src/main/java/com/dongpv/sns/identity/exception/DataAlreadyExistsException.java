@@ -21,7 +21,7 @@ public class DataAlreadyExistsException extends RuntimeException {
     }
 
     private static String getMessage(String fieldName, String fieldValue) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(FIELD_NAME, fieldName);
         map.put(FIELD_VALUE, fieldValue);
         map.put(TYPE, UNIQUE);

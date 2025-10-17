@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
+import com.dongpv.sns.identity.constant.PredefinedRole;
+import com.dongpv.sns.identity.entity.RoleEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
@@ -13,12 +15,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.dongpv.sns.identity.constant.PredefinedRole;
 import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
 import com.dongpv.sns.identity.dto.request.admin.user.CreateUserRequestDto;
 import com.dongpv.sns.identity.dto.request.admin.user.UpdateUserRequestDto;
 import com.dongpv.sns.identity.dto.response.UserResponseDto;
-import com.dongpv.sns.identity.entity.RoleEntity;
 import com.dongpv.sns.identity.entity.UserEntity;
 import com.dongpv.sns.identity.exception.UserAlreadyExistsException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
@@ -50,9 +50,16 @@ public class UserServiceImpl implements UserService {
             entity.setPassword(passwordEncoder.encode(request.getPassword()));
         }
         entity.setEmailVerified(false);
-        HashSet<RoleEntity> roles = new HashSet<>();
-        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
-        entity.setRoles(roles);
+
+        if (Objects.nonNull(request.getRoles()) && !request.getRoles().isEmpty()) {
+            var roles = roleRepository.findAllById(request.getRoles());
+            entity.setRoles(new HashSet<>(roles));
+        } else {
+            HashSet<RoleEntity> roles = new HashSet<>();
+            roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
+            entity.setRoles(roles);
+        }
+
         try {
             entity = userRepository.saveAndFlush(entity);
         } catch (DataIntegrityViolationException e) {
@@ -131,12 +138,12 @@ public class UserServiceImpl implements UserService {
 					, u.deleted_by
 					FROM users u
 				"""
-                        + commonQuery
-                        + " ORDER BY "
-                        + filter.getSortColumn()
-                        + " "
-                        + filter.getSortType()
-                        + " OFFSET :offset LIMIT :limit";
+                + commonQuery
+                + " ORDER BY "
+                + filter.getSortColumn()
+                + " "
+                + filter.getSortType()
+                + " LIMIT :limit OFFSET :offset";
         var getQueryResult = entityManager
                 .createNativeQuery(getQuery, UserEntity.class)
                 .setParameter("keyword", filter.getKeyword())

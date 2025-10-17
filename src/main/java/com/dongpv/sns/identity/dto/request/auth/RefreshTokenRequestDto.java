@@ -1,7 +1,6 @@
 package com.dongpv.sns.identity.dto.request.auth;
 
-import jakarta.validation.constraints.NotEmpty;
-
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,6 +10,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RefreshTokenRequestDto {
-    @NotEmpty
+    @NotBlank
     String refreshToken;
 }

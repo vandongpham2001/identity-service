@@ -1,6 +1,9 @@
 spring:
   application:
     name: identity-service
+  web:
+    resources:
+      add-mappings: false
   datasource:
     url: ""
     username: 

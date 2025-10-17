@@ -1,37 +1,27 @@
-package com.dongpv.sns.identity.dto.request.admin.user;
-
-import java.time.LocalDate;
-import java.util.List;
+package com.dongpv.sns.identity.dto.request.auth;
 
 import com.dongpv.sns.identity.code.Gender;
-import jakarta.validation.constraints.*;
-
 import com.dongpv.sns.identity.validator.DobConstraint;
-import com.dongpv.sns.identity.validator.UniqueEmailOnUpdateConstraint;
-import com.dongpv.sns.identity.validator.UniqueUsernameOnUpdateConstraint;
+import com.dongpv.sns.identity.validator.UniqueEmailOnCreateConstraint;
+import jakarta.validation.constraints.*;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@UniqueEmailOnUpdateConstraint(message = "EMAIL_ALREADY_EXISTS")
-@UniqueUsernameOnUpdateConstraint(message = "USERNAME_ALREADY_EXISTS")
-public class UpdateUserRequestDto {
-    @NotBlank
-    String id;
-
+public class RegisterRequestDto {
     @Email
     @NotBlank
+    @UniqueEmailOnCreateConstraint(message = "EMAIL_ALREADY_EXISTS")
     String email;
 
     @NotBlank
-    @Size(min = 3, message = "INVALID_USERNAME")
-    String username;
-
     @Size(min = 8, message = "INVALID_PASSWORD_TOO_SHORT")
     @Pattern(
             regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$",
@@ -51,6 +41,4 @@ public class UpdateUserRequestDto {
 
     @NotNull
     Gender gender;
-
-    List<String> roles;
 }

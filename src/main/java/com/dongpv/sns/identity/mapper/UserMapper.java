@@ -20,5 +20,9 @@ public interface UserMapper
 
     @Override
     @Mapping(target = "roles", ignore = true)
+    UserEntity toCreateEntity(CreateUserRequestDto request);
+
+    @Override
+    @Mapping(target = "roles", ignore = true)
     void toUpdateEntity(@MappingTarget UserEntity entity, UpdateUserRequestDto request);
 }

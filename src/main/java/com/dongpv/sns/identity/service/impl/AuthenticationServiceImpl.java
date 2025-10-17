@@ -4,18 +4,30 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
 
+import com.dongpv.sns.identity.constant.PredefinedRole;
+import com.dongpv.sns.identity.entity.RoleEntity;
+import com.dongpv.sns.identity.entity.UserEntity;
+import com.dongpv.sns.identity.exception.UserAlreadyExistsException;
+import com.dongpv.sns.identity.mapper.UserMapper;
+import com.dongpv.sns.identity.repository.RoleRepository;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dongpv.sns.identity.dto.request.auth.*;
 import com.dongpv.sns.identity.dto.response.AuthenticationResponseDto;
 import com.dongpv.sns.identity.dto.response.IntrospectResponseDto;
+import com.dongpv.sns.identity.dto.response.RegisterResponseDto;
 import com.dongpv.sns.identity.entity.InvalidatedTokenEntity;
 import com.dongpv.sns.identity.exception.CommonException;
 import com.dongpv.sns.identity.exception.UnauthenticatedException;
@@ -44,11 +56,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     Long jwtValidDuration;
 
     UserRepository userRepository;
+    RoleRepository roleRepository;
     InvalidatedTokenRepository invalidatedTokenRepository;
     UserRefreshTokenService userRefreshTokenService;
     JwtTokenPrivateUtils jwtTokenPrivateUtils;
     JwtTokenPublicUtils jwtTokenPublicUtils;
     AuthenticationManager authenticationManager;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public AuthenticationResponseDto login(AuthenticationRequestDto request) {
@@ -56,10 +70,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .findByUsernameOrEmail(request.getEmail(), request.getEmail())
                 .orElseThrow(UserNotFoundException::new);
 
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), request.getPassword()));
-
-        if (!auth.isAuthenticated()) {
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), request.getPassword()));
+            if (!auth.isAuthenticated()) {
+                throw new UnauthenticatedException();
+            }
+        } catch (AuthenticationException ex) {
             throw new UnauthenticatedException();
         }
 
@@ -77,6 +94,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .refreshToken(refreshToken.getToken())
                 .expiredAt(expiredAt)
                 .isAuthenticated(true)
+                .build();
+    }
+
+    @Override
+    public RegisterResponseDto register(RegisterRequestDto request) {
+        var entity = UserEntity.builder()
+                .email(request.getEmail())
+                .emailVerified(false)
+                .build();
+        entity.setPassword(passwordEncoder.encode(request.getPassword()));
+        HashSet<RoleEntity> roles = new HashSet<>();
+        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
+        entity.setRoles(roles);
+
+        try {
+            entity = userRepository.saveAndFlush(entity);
+        } catch (DataIntegrityViolationException e) {
+            throw new UserAlreadyExistsException();
+        }
+
+        return RegisterResponseDto.builder()
+                .email(entity.getEmail())
                 .build();
     }
 

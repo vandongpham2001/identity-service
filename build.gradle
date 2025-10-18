@@ -63,7 +63,7 @@ dependencies {
 	implementation "com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}"
 	testImplementation "com.h2database:h2:${h2Version}"
 	implementation "org.json:json:${orgJsonVersion}"
-	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:4.3.0"
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${openfeignVersion}"
 }
 
 tasks.named('test') {

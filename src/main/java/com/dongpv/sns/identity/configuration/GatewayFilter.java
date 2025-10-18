@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.dongpv.sns.identity.code.ErrorCode;
@@ -19,7 +20,7 @@ import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 import com.dongpv.sns.identity.exception.ApiResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Component
+ @Component
 public class GatewayFilter extends OncePerRequestFilter {
     @Value("${gateway.trusted-header}")
     private String trustedHeader;

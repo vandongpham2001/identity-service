@@ -104,51 +104,52 @@ public class UserServiceImpl implements UserService {
     public Page<UserResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter) {
         String commonQuery =
                 """
-					WHERE
-					u.is_deleted = 0
-					AND (
-					COALESCE(:keyword, '') = ''
-					OR LOWER(u.email) LIKE LOWER(CONCAT('%',:keyword,'%'))
-					OR LOWER(u.username) LIKE LOWER(CONCAT('%',:keyword,'%'))
-					)
-				""";
+                    WHERE
+                        u.is_deleted = 0
+                    AND (
+                        COALESCE(:keyword, '') = ''
+                        OR LOWER(u.email) LIKE LOWER(CONCAT('%',:keyword,'%'))
+                        OR LOWER(u.username) LIKE LOWER(CONCAT('%',:keyword,'%'))
+                    )
+                """;
 
-        String countQuery = """
-					SELECT
-					count(u.id)
-					FROM users u
-				""" + commonQuery;
+        String countQuery =
+                """
+                    SELECT
+                        count(u.id)
+                    FROM users u
+                    %s
+                """.formatted(commonQuery);
 
         var countQueryResult =
                 entityManager.createNativeQuery(countQuery, Integer.class).setParameter("keyword", filter.getKeyword());
         Integer total = (Integer) countQueryResult.getSingleResult();
         String getQuery =
                 """
-					SELECT u.id
-					, u.email
-					, u.username
-					, u.email_verified
-					, u.password
-					, u.created_at
-					, u.updated_at
-					, u.created_by
-					, u.updated_by
-					, u.deleted_at
-					, u.is_deleted
-					, u.deleted_by
-					FROM users u
-				"""
-                + commonQuery
-                + " ORDER BY "
-                + filter.getSortColumn()
-                + " "
-                + filter.getSortType()
-                + " LIMIT :limit OFFSET :offset";
+                    SELECT u.id
+                         , u.email
+                         , u.username
+                         , u.email_verified
+                         , u.password
+                         , u.created_at
+                         , u.updated_at
+                         , u.created_by
+                         , u.updated_by
+                         , u.deleted_at
+                         , u.is_deleted
+                         , u.deleted_by
+                    FROM users u
+                    %s
+                    ORDER BY %s %s
+                    LIMIT :limit OFFSET :offset
+                """.formatted(commonQuery, filter.getSortColumn(), filter.getSortType());
+
         var getQueryResult = entityManager
                 .createNativeQuery(getQuery, UserEntity.class)
                 .setParameter("keyword", filter.getKeyword())
                 .setParameter("offset", pageRequest.getOffset())
                 .setParameter("limit", pageRequest.getPageSize());
+
         @SuppressWarnings("unchecked")
         List<UserEntity> entities = getQueryResult.getResultList();
         var data = entities.stream().map(UserMapper.INSTANCE::toResponseDto).toList();

@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-import com.dongpv.sns.identity.constant.PredefinedRole;
-import com.dongpv.sns.identity.entity.RoleEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
@@ -15,10 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dongpv.sns.identity.constant.PredefinedRole;
 import com.dongpv.sns.identity.dto.request.admin.BaseFilterRequestDto;
 import com.dongpv.sns.identity.dto.request.admin.user.CreateUserRequestDto;
 import com.dongpv.sns.identity.dto.request.admin.user.UpdateUserRequestDto;
 import com.dongpv.sns.identity.dto.response.UserResponseDto;
+import com.dongpv.sns.identity.entity.RoleEntity;
 import com.dongpv.sns.identity.entity.UserEntity;
 import com.dongpv.sns.identity.exception.UserAlreadyExistsException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
@@ -104,45 +104,45 @@ public class UserServiceImpl implements UserService {
     public Page<UserResponseDto> filter(PageRequest pageRequest, BaseFilterRequestDto filter) {
         String commonQuery =
                 """
-                    WHERE
-                        u.is_deleted = 0
-                    AND (
-                        COALESCE(:keyword, '') = ''
-                        OR LOWER(u.email) LIKE LOWER(CONCAT('%',:keyword,'%'))
-                        OR LOWER(u.username) LIKE LOWER(CONCAT('%',:keyword,'%'))
-                    )
-                """;
+					WHERE
+						u.is_deleted = 0
+					AND (
+						COALESCE(:keyword, '') = ''
+						OR LOWER(u.email) LIKE LOWER(CONCAT('%',:keyword,'%'))
+						OR LOWER(u.username) LIKE LOWER(CONCAT('%',:keyword,'%'))
+					)
+				""";
 
-        String countQuery =
-                """
-                    SELECT
-                        count(u.id)
-                    FROM users u
-                    %s
-                """.formatted(commonQuery);
+        String countQuery = """
+					SELECT
+						count(u.id)
+					FROM users u
+					%s
+				""".formatted(commonQuery);
 
         var countQueryResult =
                 entityManager.createNativeQuery(countQuery, Integer.class).setParameter("keyword", filter.getKeyword());
         Integer total = (Integer) countQueryResult.getSingleResult();
         String getQuery =
                 """
-                    SELECT u.id
-                         , u.email
-                         , u.username
-                         , u.email_verified
-                         , u.password
-                         , u.created_at
-                         , u.updated_at
-                         , u.created_by
-                         , u.updated_by
-                         , u.deleted_at
-                         , u.is_deleted
-                         , u.deleted_by
-                    FROM users u
-                    %s
-                    ORDER BY %s %s
-                    LIMIT :limit OFFSET :offset
-                """.formatted(commonQuery, filter.getSortColumn(), filter.getSortType());
+					SELECT u.id
+						, u.email
+						, u.username
+						, u.email_verified
+						, u.password
+						, u.created_at
+						, u.updated_at
+						, u.created_by
+						, u.updated_by
+						, u.deleted_at
+						, u.is_deleted
+						, u.deleted_by
+					FROM users u
+					%s
+					ORDER BY %s %s
+					LIMIT :limit OFFSET :offset
+				"""
+                        .formatted(commonQuery, filter.getSortColumn(), filter.getSortType());
 
         var getQueryResult = entityManager
                 .createNativeQuery(getQuery, UserEntity.class)

@@ -3,9 +3,9 @@ package com.dongpv.sns.identity.dto.request.admin.user;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.dongpv.sns.identity.code.Gender;
 import jakarta.validation.constraints.*;
 
+import com.dongpv.sns.identity.code.Gender;
 import com.dongpv.sns.identity.validator.DobConstraint;
 import com.dongpv.sns.identity.validator.UniqueEmailOnUpdateConstraint;
 import com.dongpv.sns.identity.validator.UniqueUsernameOnUpdateConstraint;
@@ -33,10 +33,7 @@ public class UpdateUserRequestDto {
     String username;
 
     @Size(min = 8, message = "INVALID_PASSWORD_TOO_SHORT")
-    @Pattern(
-            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$",
-            message = "INVALID_PASSWORD_FORMAT"
-    )
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$", message = "INVALID_PASSWORD_FORMAT")
     String password;
 
     @NotBlank

@@ -13,7 +13,6 @@ public enum Gender implements DisplayCodesInt {
         this.display = display;
     }
 
-
     @Override
     public Integer getCode() {
         return code;

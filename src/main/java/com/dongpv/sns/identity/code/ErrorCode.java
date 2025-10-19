@@ -47,7 +47,10 @@ public enum ErrorCode {
     INVALID_DOB(1408, "Your age must be at least {min}.", HttpStatus.BAD_REQUEST),
     EMAIL_ALREADY_EXISTS(1409, "Email already exists.", HttpStatus.BAD_REQUEST),
     USERNAME_ALREADY_EXISTS(1410, "Username already exists.", HttpStatus.BAD_REQUEST),
-    INVALID_PASSWORD_FORMAT(1411, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.", HttpStatus.BAD_REQUEST),
+    INVALID_PASSWORD_FORMAT(
+            1411,
+            "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+            HttpStatus.BAD_REQUEST),
 
     // File Management Errors
     FILE_STORAGE_ERROR(1500, "File storage error occurred.", HttpStatus.INTERNAL_SERVER_ERROR),

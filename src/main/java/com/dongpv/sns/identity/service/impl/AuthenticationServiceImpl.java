@@ -5,14 +5,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 
-import com.dongpv.sns.identity.constant.PredefinedRole;
-import com.dongpv.sns.identity.entity.RoleEntity;
-import com.dongpv.sns.identity.entity.UserEntity;
-import com.dongpv.sns.identity.exception.UserAlreadyExistsException;
-import com.dongpv.sns.identity.mapper.UserMapper;
-import com.dongpv.sns.identity.repository.RoleRepository;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -24,15 +17,20 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dongpv.sns.identity.constant.PredefinedRole;
 import com.dongpv.sns.identity.dto.request.auth.*;
 import com.dongpv.sns.identity.dto.response.AuthenticationResponseDto;
 import com.dongpv.sns.identity.dto.response.IntrospectResponseDto;
 import com.dongpv.sns.identity.dto.response.RegisterResponseDto;
 import com.dongpv.sns.identity.entity.InvalidatedTokenEntity;
+import com.dongpv.sns.identity.entity.RoleEntity;
+import com.dongpv.sns.identity.entity.UserEntity;
 import com.dongpv.sns.identity.exception.CommonException;
 import com.dongpv.sns.identity.exception.UnauthenticatedException;
+import com.dongpv.sns.identity.exception.UserAlreadyExistsException;
 import com.dongpv.sns.identity.exception.UserNotFoundException;
 import com.dongpv.sns.identity.repository.InvalidatedTokenRepository;
+import com.dongpv.sns.identity.repository.RoleRepository;
 import com.dongpv.sns.identity.repository.UserRepository;
 import com.dongpv.sns.identity.security.JwtTokenPrivateUtils;
 import com.dongpv.sns.identity.security.JwtTokenPublicUtils;
@@ -114,9 +112,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UserAlreadyExistsException();
         }
 
-        return RegisterResponseDto.builder()
-                .email(entity.getEmail())
-                .build();
+        return RegisterResponseDto.builder().email(entity.getEmail()).build();
     }
 
     @Override

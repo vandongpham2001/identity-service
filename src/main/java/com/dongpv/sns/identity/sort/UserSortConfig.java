@@ -8,9 +8,6 @@ public class UserSortConfig extends BaseEntitySortConfig {
 
     @Override
     public List<String> getEntitySpecificSortableColumns() {
-        return List.of(
-                EMAIL,
-                USERNAME
-        );
+        return List.of(EMAIL, USERNAME);
     }
 }

@@ -20,7 +20,7 @@ import com.dongpv.sns.identity.dto.MultiRecordErrorResponseDtoBase;
 import com.dongpv.sns.identity.exception.ApiResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
- @Component
+@Component
 public class GatewayFilter extends OncePerRequestFilter {
     @Value("${gateway.trusted-header}")
     private String trustedHeader;

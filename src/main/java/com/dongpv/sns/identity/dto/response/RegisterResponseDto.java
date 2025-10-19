@@ -1,9 +1,9 @@
 package com.dongpv.sns.identity.dto.response;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import com.dongpv.sns.identity.code.Gender;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

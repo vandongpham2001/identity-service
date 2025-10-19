@@ -3,6 +3,7 @@ package com.dongpv.sns.identity.dto.request.admin.role;
 import java.util.Set;
 
 import jakarta.validation.constraints.NotBlank;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 public class CreateRoleRequestDto {
     @NotBlank
     String name;
+
     String description;
     Set<String> permissions;
 }

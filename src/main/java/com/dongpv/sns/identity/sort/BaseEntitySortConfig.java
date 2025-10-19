@@ -9,11 +9,7 @@ public abstract class BaseEntitySortConfig {
     public static final String UPDATED_AT = "updated_at";
 
     public List<String> getCommonSortableColumns() {
-        return List.of(
-                ID,
-                CREATED_AT,
-                UPDATED_AT
-        );
+        return List.of(ID, CREATED_AT, UPDATED_AT);
     }
 
     public abstract List<String> getEntitySpecificSortableColumns();

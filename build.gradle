@@ -70,12 +70,18 @@ dependencies {
 tasks.register('installLocalGitHook', Copy) {
     from file("$rootProject.rootDir/scripts/pre-commit")
     into file("$rootProject.rootDir/.git/hooks")
-    fileMode = 0755
+    filePermissions { permissions ->
+        permissions.user.read = true
+        permissions.user.write = true
+        permissions.group.read = true
+        permissions.other.read = true
+    }
 }
 
 tasks.named('compileJava') {
     dependsOn tasks.named('installLocalGitHook')
 }
+
 tasks.named('build') {
     dependsOn 'spotlessApply'
 }

@@ -9,7 +9,7 @@
         <Property name="CONSOLE_LOG_PATTERN">%-8relative - %d{${sys:LOG_DATEFORMAT_PATTERN:-yyyyMMdd HHmmssSSS}} %-20X{userId} ${sys:LOG_LEVEL_PATTERN:-%-5p} [PID:%pid] - [%-15.15t] %c%L: %m{nolookups}%n${sys:LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Property>
         <Property name="FILE_LOG_PATTERN">%-8relative - %d{${sys:LOG_DATEFORMAT_PATTERN:-yyyyMMdd HHmmssSSS}} %-20X{userId} ${sys:LOG_LEVEL_PATTERN:-%-5p} [PID:%pid] - [%-15.15t] %c%L: %m{nolookups}%n${sys:LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Property>
         <Property name="LOG_FILE">${sys:LOG_FILE:-identity-service}</Property>
-        <Property name="LOG_PATH">${sys:LOG_PATH:-identity-service/logs}</Property>
+        <Property name="LOG_PATH">${sys:LOG_PATH:-logs}</Property>
     </Properties>
 
     <Appenders>

@@ -28,6 +28,7 @@ public class UserEntity extends BaseEntity {
 
     String password;
 
+    @Builder.Default
     @Column(name = "email_verified")
     Boolean emailVerified = false;
 

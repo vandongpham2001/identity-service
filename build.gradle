@@ -41,6 +41,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -64,6 +65,10 @@ dependencies {
 	testImplementation "com.h2database:h2:${h2Version}"
 	implementation "org.json:json:${orgJsonVersion}"
 	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${openfeignVersion}"
+}
+
+tasks.named('build') {
+    dependsOn 'spotlessApply'
 }
 
 tasks.named('test') {

@@ -32,6 +32,7 @@ public class UserRefreshTokenEntity extends BaseEntity {
     @Column(name = "device_info")
     String deviceInfo;
 
+    @Builder.Default
     @Column(name = "revoked")
     Boolean revoked = false;
 

@@ -37,6 +37,7 @@ public enum ErrorCode {
 
     // Validation Errors
     INVALID_FIELD(1400, "Invalid field data.", HttpStatus.BAD_REQUEST),
+
     INVALID_OTP(1401, "Invalid OTP code.", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH(1402, "Password does not match.", HttpStatus.BAD_REQUEST),
     RESET_PASSWORD_LINK_EXPIRED(1403, "Reset password link has expired.", HttpStatus.BAD_REQUEST),

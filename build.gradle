@@ -67,6 +67,15 @@ dependencies {
 	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${openfeignVersion}"
 }
 
+tasks.register('installLocalGitHook', Copy) {
+    from file("$rootProject.rootDir/scripts/pre-commit")
+    into file("$rootProject.rootDir/.git/hooks")
+    fileMode = 0755
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('installLocalGitHook')
+}
 tasks.named('build') {
     dependsOn 'spotlessApply'
 }

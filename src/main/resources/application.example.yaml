@@ -1,3 +1,8 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /identity
+
 spring:
   application:
     name: identity-service
@@ -27,11 +32,11 @@ logging:
     org.hibernate.orm.connections.pooling:
 
 jwt:
-  signerKey:
-  valid-duration: # in seconds
-  refreshable-duration: # in seconds
-
-server:
-  port: 8080
-  servlet:
-    context-path: /identity
+  issuer:
+  secret-key:
+  private-key:
+  public-key:
+  access-token:
+    valid-duration: # in seconds
+  refresh-token:
+    valid-duration: # in seconds

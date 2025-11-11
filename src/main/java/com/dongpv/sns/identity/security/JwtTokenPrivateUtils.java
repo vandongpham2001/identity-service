@@ -40,8 +40,8 @@ public class JwtTokenPrivateUtils {
     protected String jwtPrivateKeyEncode;
 
     @NonFinal
-    @Value("${jwt.valid-duration}")
-    protected long jwtValidDuration;
+    @Value("${jwt.access-token.valid-duration}")
+    protected long jwtAccessTokenValidDuration;
 
     @NonFinal
     @Value("${jwt.issuer}")
@@ -73,8 +73,9 @@ public class JwtTokenPrivateUtils {
                 .subject(user.getEmail())
                 .issuer(issuer)
                 .issueTime(new Date())
-                .expirationTime(new Date(
-                        Instant.now().plus(jwtValidDuration, ChronoUnit.SECONDS).toEpochMilli()))
+                .expirationTime(new Date(Instant.now()
+                        .plus(jwtAccessTokenValidDuration, ChronoUnit.SECONDS)
+                        .toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
                 .claim("scope", buildScope(user))
                 .claim("id", user.getId())

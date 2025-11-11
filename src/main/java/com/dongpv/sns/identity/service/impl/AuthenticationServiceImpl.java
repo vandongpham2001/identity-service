@@ -50,8 +50,8 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationServiceImpl implements AuthenticationService {
     @NonFinal
-    @Value("${jwt.valid-duration}")
-    Long jwtValidDuration;
+    @Value("${jwt.access-token.valid-duration}")
+    Long jwtAccessTokenValidDuration;
 
     UserRepository userRepository;
     RoleRepository roleRepository;
@@ -84,8 +84,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .userId(user.getId())
                 .build();
         var refreshToken = userRefreshTokenService.createRefreshToken(createRefreshTokenRequestDto);
-        Date expiredAt = new Date(
-                Instant.now().plus(jwtValidDuration, ChronoUnit.SECONDS).toEpochMilli());
+        Date expiredAt = new Date(Instant.now()
+                .plus(jwtAccessTokenValidDuration, ChronoUnit.SECONDS)
+                .toEpochMilli());
 
         return AuthenticationResponseDto.builder()
                 .accessToken(token)
@@ -164,8 +165,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = userRepository.findByEmail(email).orElseThrow(UnauthenticatedException::new);
         var token = jwtTokenPrivateUtils.generateToken(user);
         var newRefreshToken = userRefreshTokenService.rotate(refreshToken);
-        Date expiredAt = new Date(
-                Instant.now().plus(jwtValidDuration, ChronoUnit.SECONDS).toEpochMilli());
+        Date expiredAt = new Date(Instant.now()
+                .plus(jwtAccessTokenValidDuration, ChronoUnit.SECONDS)
+                .toEpochMilli());
 
         return AuthenticationResponseDto.builder()
                 .accessToken(token)

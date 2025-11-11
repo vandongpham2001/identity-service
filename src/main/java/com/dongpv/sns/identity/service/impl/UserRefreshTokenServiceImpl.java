@@ -30,8 +30,8 @@ import lombok.experimental.NonFinal;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
     @NonFinal
-    @Value("${jwt.refreshable-duration}")
-    private Long refreshTokenDuration;
+    @Value("${jwt.refresh-token.valid-duration}")
+    private Long jwtRefreshTokenValidDuration;
 
     UserRefreshTokenRepository userRefreshTokenRepository;
     JwtTokenPrivateUtils jwtTokenPrivateUtils;
@@ -106,7 +106,7 @@ public class UserRefreshTokenServiceImpl implements UserRefreshTokenService {
         String hashedToken = jwtTokenPrivateUtils.hashToken(rawToken);
 
         UserRefreshTokenEntity refreshToken = new UserRefreshTokenEntity();
-        refreshToken.setExpiredAt(Instant.now().plus(refreshTokenDuration, ChronoUnit.SECONDS));
+        refreshToken.setExpiredAt(Instant.now().plus(jwtRefreshTokenValidDuration, ChronoUnit.SECONDS));
         refreshToken.setHashedToken(hashedToken);
         refreshToken.setUserId(request.getUserId());
         refreshToken.setEmail(request.getEmail());

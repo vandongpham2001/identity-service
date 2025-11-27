@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${IDENTITY_SERVICE_PORT}
   servlet:
     context-path: /identity
 
@@ -10,33 +10,57 @@ spring:
     resources:
       add-mappings: false
   datasource:
-    url: ""
-    username: 
-    password: 
-    driver-class-name: 
+    url: "jdbc:postgresql://${IDENTITY_POSTGRES_DB_HOST}:${IDENTITY_POSTGRES_DB_PORT}/${IDENTITY_POSTGRES_DB_NAME}"
+    username: ${IDENTITY_POSTGRES_DB_USERNAME}
+    password: ${IDENTITY_POSTGRES_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
     hikari:
-      schema: 
+      schema: public
   jpa:
     properties:
       hibernate:
-        default_schema: 
+        default_schema: public
     hibernate:
-      ddl-auto:
-    show-sql:
-    generate-ddl:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: false
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
 
 logging:
   level:
-    com.zaxxer.hikari:
-    org.hibernate.engine.jdbc.connections.internal:
-    org.hibernate.orm.connections.pooling:
+    com.zaxxer.hikari: off
+    org.hibernate.engine.jdbc.connections.internal: off
+    org.hibernate.orm.connections.pooling: WARN
 
 jwt:
-  issuer:
-  secret-key:
-  private-key:
-  public-key:
+  issuer: ${IDENTITY_JWT_ISSUER}
+  secret-key: ${IDENTITY_JWT_SECRET_KEY}
+  private-key: ${IDENTITY_JWT_PRIVATE_KEY}
+  public-key: ${IDENTITY_JWT_PUBLIC_KEY}
   access-token:
-    valid-duration: # in seconds
+    valid-duration: ${IDENTITY_JWT_ACCESS_TOKEN_VALID_DURATION} # 7 days
   refresh-token:
-    valid-duration: # in seconds
+    valid-duration: ${IDENTITY_JWT_REFRESH_TOKEN_VALID_DURATION} # 30 days
+
+gateway:
+  trusted-header: ${API_GATEWAY_HEADER}
+  token: ${API_GATEWAY_TOKEN}
+
+master-data:
+  admin-account:
+    username: ${IDENTITY_ADMIN_USERNAME}
+    email: ${IDENTITY_ADMIN_EMAIL}
+    password: ${IDENTITY_ADMIN_PASSWORD}
+
+web:
+  url: ${WEB_URL}
+
+grpc:
+  client:
+    profile:
+      address: ${PROFILE_SERVICE_GRPC_ADDRESS}
+      negotiation-type: plaintext

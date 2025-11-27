@@ -1,5 +1,3 @@
-import groovy.lang.Closure
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version "${bootVersion}"
@@ -7,6 +5,7 @@ plugins {
 	id 'io.freefair.lombok' version "${freefairLombokVersion}"
 	id 'jacoco'
 	id 'com.diffplug.spotless' version "${spotlessVersion}"
+    id 'com.google.protobuf' version "${protobufPluginVersion}"
 }
 
 group = sysGroup
@@ -65,6 +64,16 @@ dependencies {
 	testImplementation "com.h2database:h2:${h2Version}"
 	implementation "org.json:json:${orgJsonVersion}"
 	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${openfeignVersion}"
+
+    // gRPC Dependencies
+    implementation "net.devh:grpc-client-spring-boot-starter:${grpcStarterVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-api:${grpcVersion}"
+    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+
+    implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationVersion}"
+    implementation "javax.annotation:javax.annotation-api:${javaxAnnotationVersion}"
 }
 
 tasks.register('installLocalGitHook', Copy) {
@@ -124,4 +133,27 @@ spotless {
 		palantirJavaFormat()
 		importOrder("java", "jakarta", "org", "com", "com.diffplug")
 	}
+}
+
+def generatedFilesBaseDir = layout.buildDirectory.dir("/generated/source/proto")
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+    clean {
+        delete generatedFilesBaseDir
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all().each {task ->
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
 }

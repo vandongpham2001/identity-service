@@ -74,6 +74,8 @@ dependencies {
 
     implementation "jakarta.annotation:jakarta.annotation-api:${jakartaAnnotationVersion}"
     implementation "javax.annotation:javax.annotation-api:${javaxAnnotationVersion}"
+
+    implementation "org.springframework.kafka:spring-kafka"
 }
 
 tasks.register('installLocalGitHook', Copy) {

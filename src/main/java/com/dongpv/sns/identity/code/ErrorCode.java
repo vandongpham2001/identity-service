@@ -34,6 +34,8 @@ public enum ErrorCode {
     DATA_ALREADY_EXISTS(1301, "Data already exists.", HttpStatus.UNPROCESSABLE_ENTITY),
     API_RESOURCE_NOT_FOUND(1302, "API resource not found.", HttpStatus.NOT_FOUND),
     ENTITY_NOT_FOUND(1303, "Entity not found.", HttpStatus.NOT_FOUND),
+    PROFILE_CREATION_FAILED(1304, "Unable to create profile.", HttpStatus.BAD_GATEWAY),
+    PROFILE_UPDATE_FAILED(1305, "Unable to update profile.", HttpStatus.BAD_GATEWAY),
 
     // Validation Errors
     INVALID_FIELD(1400, "Invalid field data.", HttpStatus.BAD_REQUEST),

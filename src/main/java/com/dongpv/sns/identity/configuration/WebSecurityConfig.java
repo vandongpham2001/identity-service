@@ -9,7 +9,6 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -36,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 
     private static final String[] PUBLIC_ENDPOINTS = {
-        "/auth/register", "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh-token",
+        "/auth/register", "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh-token", "/health",
     };
 
     @Value("${web.url}")
@@ -73,7 +72,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_ENDPOINTS)
                 .permitAll()
                 .anyRequest()
                 .authenticated());
